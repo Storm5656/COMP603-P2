@@ -4,6 +4,7 @@
  */
 package assignment2;
 import assignment2.classes.*;
+import javax.swing.*;
 
 /**
  *
@@ -16,10 +17,14 @@ public class Assignment2 {
      */
     public static void main(String[] args) {
         MainController menu = new MainController();
+        OCMS frame = new OCMS();
         
+        // Resize form
+        frame.setVisible(true);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         
-        
-        
+        // Resize properly
+        frame.setSplitHeight();
     }
     
 }
