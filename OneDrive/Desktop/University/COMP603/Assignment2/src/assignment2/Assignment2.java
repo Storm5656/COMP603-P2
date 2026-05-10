@@ -19,8 +19,6 @@ public class Assignment2 {
         MainController menu = new MainController();
         OCMS frame = new OCMS();
         
-        System.out.println(System.getProperty("user.dir"));
-        
         // Resize form
         frame.setVisible(true);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -28,8 +26,12 @@ public class Assignment2 {
         // Resize properly
         frame.setSplitHeight();
         
-        
         DatabaseManager.establishConnection();
+        
+        CharacterHandler c = new CharacterHandler();
+        c.editCharacterName("Ren Vanderpyl", 1);
+        
+    
     }
     
 }

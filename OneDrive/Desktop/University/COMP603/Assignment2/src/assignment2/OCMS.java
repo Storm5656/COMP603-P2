@@ -83,7 +83,7 @@ public class OCMS extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         charTagList = new javax.swing.JList<>();
         jLabel12 = new javax.swing.JLabel();
-        jButton8 = new javax.swing.JButton();
+        createCharacterBtn = new javax.swing.JButton();
         jLabel31 = new javax.swing.JLabel();
         gPanel = new javax.swing.JPanel();
         groupListPanel = new javax.swing.JPanel();
@@ -502,11 +502,11 @@ public class OCMS extends javax.swing.JFrame {
         jLabel12.setText("Tags");
         jLabel12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jButton8.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jButton8.setText("Create/Update Character");
-        jButton8.setBorder(null);
-        jButton8.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jButton8.addActionListener(this::jButton8ActionPerformed);
+        createCharacterBtn.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        createCharacterBtn.setText("Create/Update Character");
+        createCharacterBtn.setBorder(null);
+        createCharacterBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        createCharacterBtn.addActionListener(this::createCharacterBtnActionPerformed);
 
         jLabel31.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel31.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -538,7 +538,7 @@ public class OCMS extends javax.swing.JFrame {
                     .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(createCharacterBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         charDetailsPanelLayout.setVerticalGroup(
             charDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -571,7 +571,7 @@ public class OCMS extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jButton8))
+                .addComponent(createCharacterBtn))
         );
 
         javax.swing.GroupLayout cPanelLayout = new javax.swing.GroupLayout(cPanel);
@@ -1300,8 +1300,7 @@ public class OCMS extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel37)
                         .addGap(0, 0, 0)
-                        .addComponent(occupationInputText1)
-                        .addGap(0, 0, 0)))
+                        .addComponent(occupationInputText1)))
                 .addContainerGap())
             .addComponent(jSeparator23)
             .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1334,8 +1333,6 @@ public class OCMS extends javax.swing.JFrame {
                 .addComponent(jButton9)
                 .addGap(0, 0, 0))
         );
-
-        jLabel36.getAccessibleContext().setAccessibleName("Select Group");
 
         javax.swing.GroupLayout sPanelLayout = new javax.swing.GroupLayout(sPanel);
         sPanel.setLayout(sPanelLayout);
@@ -1379,6 +1376,7 @@ public class OCMS extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBtnActionPerformed
+        DatabaseManager.closeConnections();
         this.dispose();
     }//GEN-LAST:event_exitBtnActionPerformed
 
@@ -1431,9 +1429,33 @@ public class OCMS extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_addGroupBtn1ActionPerformed
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton8ActionPerformed
+    private void createCharacterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createCharacterBtnActionPerformed
+        CharacterHandler c = new CharacterHandler();
+        try{
+            int age;
+            
+            if (ageInputText.getText().isEmpty()){
+                age = 0;
+            } 
+            else{
+                age = Integer.parseInt(ageInputText.getText());
+            }
+            
+            String name = nameInputText.getText();
+            String pro = pronounsInputText.getText();
+            String dob = dobInputText.getText();
+            String spe = speciesInputText.getText();
+            String occ = occupationInputText.getText();
+            String desc = descriptionInputTextArea.getText();
+           
+            c.createCharacter(name, pro, dob, age, spe, occ, desc);
+            
+            clearCharacterInputs();
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_createCharacterBtnActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -1481,6 +1503,22 @@ public class OCMS extends javax.swing.JFrame {
         });
     }
     
+    public void clearCharacterInputs(){
+        nameInputText.setText("");
+        pronounsInputText.setText("");
+        dobInputText.setText("");
+        ageInputText.setText("");
+        speciesInputText.setText("");
+        occupationInputText.setText("");
+        descriptionInputTextArea.setText("");
+        
+        refreshCharacterList();
+    }
+    
+    public void refreshCharacterList(){
+        
+    }
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addCharBtn;
@@ -1495,6 +1533,7 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JList<String> charRelationshipList;
     private javax.swing.JList<String> charTagList;
     private javax.swing.JList<String> characterList;
+    private javax.swing.JButton createCharacterBtn;
     private javax.swing.JTextArea descriptionInputTextArea;
     private javax.swing.JTextArea descriptionInputTextArea1;
     private javax.swing.JTextField dobInputText;
@@ -1513,7 +1552,6 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;

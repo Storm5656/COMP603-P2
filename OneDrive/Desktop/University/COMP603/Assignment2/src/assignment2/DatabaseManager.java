@@ -20,7 +20,7 @@ public class DatabaseManager {
             setupDatabase();
 
         } catch (SQLException ex){
-            System.err.println("SQLException: " + ex.getMessage());
+            ex.printStackTrace();
         }
         
     }
@@ -105,14 +105,5 @@ public class DatabaseManager {
             }
         }
         
-    }
-    
-    public static void updateDatabase(String sql){
-        try (Statement s = conn.createStatement()){
-            s.executeUpdate(sql);
-            
-        } catch(SQLException ex){
-            ex.printStackTrace();
-        }
     }
 }
