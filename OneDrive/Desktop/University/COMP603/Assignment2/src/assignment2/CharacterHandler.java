@@ -7,6 +7,10 @@ package assignment2;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.Statement;
+import java.sql.*;
 
 /**
  * @author ren
@@ -154,7 +158,7 @@ public class CharacterHandler {
     }
     
     public void deleteCharacter(int id){
-        String sql = "DELETE FROM CHARACTER WHERE CHAR_ID = ?";
+        String sql = "DELETE FROM CHARACTERS WHERE CHAR_ID = ?";
         Connection conn = DatabaseManager.getConnection();
         
         try (PreparedStatement ps = conn.prepareStatement(sql)){
@@ -162,6 +166,76 @@ public class CharacterHandler {
             ps.executeUpdate();
             
         }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+    
+    public String[] getAllCharacters(){
+        List<String> list = new ArrayList<String>();
+        String sql = "SELECT NAME FROM CHARACTERS";
+        Connection conn = DatabaseManager.getConnection();
+        
+        try (Statement s = conn.createStatement(); 
+            ResultSet rs = s.executeQuery(sql);){
+            while (rs.next()) {
+            list.add(rs.getString("NAME"));
+            }
+        } catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        
+        return list.toArray(new String[0]);
+    }
+    
+    public Character getCharacter(String n){
+        String sql = "SELECT * FROM CHARACTERS WHERE NAME = ?";
+        Character c = null;
+        Connection conn = DatabaseManager.getConnection();
+        
+        try (PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, n);
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()){
+                int id = rs.getInt("CHAR_ID");
+                String name = rs.getString("NAME");
+                String pronouns = rs.getString("PRONOUNS");
+                int age = rs.getInt("AGE");
+                String dob = rs.getString("DOB");
+                String species = rs.getString("SPECIES");
+                String occupation = rs.getString("OCCUPATION");
+                String desc = rs.getString("DESCRIPTION");
+                c = new Character(id, name, pronouns, age, dob, species, occupation, desc);
+            
+            }
+            
+        } catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return c;
+    }
+    
+    public void editCharacter(Character c){
+        String sql = "UPDATE CHARACTERS "
+                + "SET NAME = ?, PRONOUNS = ?, AGE = ?, DOB = ?, SPECIES = ?, OCCUPATION = ?, DESCRIPTION = ? "
+                + "WHERE CHAR_ID = ?";
+        Connection conn = DatabaseManager.getConnection();
+        
+        try (PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, c.getName());
+            ps.setString(2, c.getPronouns());
+            ps.setInt(3, c.getAge());
+            ps.setString(4, c.getDob());
+            ps.setString(5, c.getSpecies());
+            ps.setString(6, c.getOccupation());
+            ps.setString(7, c.getDescription());
+            ps.setInt(8, c.getId());
+            
+            ps.executeUpdate();
+            
+            
+            
+        } catch(SQLException ex){
             ex.printStackTrace();
         }
     }

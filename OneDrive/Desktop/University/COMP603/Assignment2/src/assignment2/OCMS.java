@@ -16,6 +16,7 @@ import javax.swing.JSplitPane;
 public class OCMS extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(OCMS.class.getName());
+    private Character selectedChar;
 
     /**
      * Creates new form OCMS
@@ -312,6 +313,7 @@ public class OCMS extends javax.swing.JFrame {
 
         characterList.setBorder(null);
         characterList.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        characterList.addListSelectionListener(this::characterListValueChanged);
         jScrollPane1.setViewportView(characterList);
 
         jSeparator1.setForeground(new java.awt.Color(0, 0, 0));
@@ -1407,6 +1409,8 @@ public class OCMS extends javax.swing.JFrame {
 
     private void addCharBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCharBtnActionPerformed
         charDetailsPanel.setVisible(true);
+        clearCharacterInputs();
+        selectedChar = null;
     }//GEN-LAST:event_addCharBtnActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -1433,29 +1437,54 @@ public class OCMS extends javax.swing.JFrame {
         CharacterHandler c = new CharacterHandler();
         try{
             int age;
-            
+
             if (ageInputText.getText().isEmpty()){
                 age = 0;
             } 
             else{
                 age = Integer.parseInt(ageInputText.getText());
             }
-            
+
             String name = nameInputText.getText();
             String pro = pronounsInputText.getText();
             String dob = dobInputText.getText();
             String spe = speciesInputText.getText();
             String occ = occupationInputText.getText();
             String desc = descriptionInputTextArea.getText();
-           
-            c.createCharacter(name, pro, dob, age, spe, occ, desc);
+
+            if(selectedChar == null){
+                c.createCharacter(name, pro, dob, age, spe, occ, desc);
+            }
+            else{
+                Character newC = new Character(selectedChar.getId(), name, pro, age, dob, spe, occ, desc);
+                c.editCharacter(newC);
+            }
             
             clearCharacterInputs();
+            charDetailsPanel.setVisible(false);
         }
         catch(Exception ex){
             ex.printStackTrace();
         }
     }//GEN-LAST:event_createCharacterBtnActionPerformed
+
+    private void characterListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_characterListValueChanged
+        String selected = characterList.getSelectedValue();
+        CharacterHandler ch = new CharacterHandler();
+        Character c = ch.getCharacter(selected);
+        selectedChar = c;
+        
+        charDetailsPanel.setVisible(true);
+        if (c != null){
+            nameInputText.setText(c.getName());
+            pronounsInputText.setText(c.getPronouns());
+            ageInputText.setText(Integer.toString(c.getAge()));
+            dobInputText.setText(c.getDob());
+            speciesInputText.setText(c.getSpecies());
+            occupationInputText.setText(c.getOccupation());
+            descriptionInputTextArea.setText(c.getDescription());
+        }
+    }//GEN-LAST:event_characterListValueChanged
     /**
      * @param args the command line arguments
      */
@@ -1516,7 +1545,9 @@ public class OCMS extends javax.swing.JFrame {
     }
     
     public void refreshCharacterList(){
+        CharacterHandler c = new CharacterHandler();
         
+        characterList.setListData(c.getAllCharacters());
     }
     
     

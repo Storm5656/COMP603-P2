@@ -41,7 +41,7 @@ public class DatabaseManager {
             // Create character table
             s.executeUpdate("CREATE TABLE CHARACTERS" +
                     "(CHAR_ID INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY," +
-                    "NAME VARCHAR(100) NOT NULL," +
+                    "NAME VARCHAR(100) NOT NULL UNIQUE," +
                     "PRONOUNS VARCHAR(100)," +
                     "DOB VARCHAR(20)," +
                     "AGE INT," +

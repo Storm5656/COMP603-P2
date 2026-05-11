@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package assignment2;
-import assignment2.classes.*;
 import javax.swing.*;
 
 /**
@@ -15,8 +14,9 @@ public class Assignment2 {
     /**
      * @param args the command line arguments
      */
+    
+    // CLEAN ALL OF THIS UP
     public static void main(String[] args) {
-        MainController menu = new MainController();
         OCMS frame = new OCMS();
         
         // Resize form
@@ -26,10 +26,9 @@ public class Assignment2 {
         // Resize properly
         frame.setSplitHeight();
         
+        // Set up
         DatabaseManager.establishConnection();
-        
-        CharacterHandler c = new CharacterHandler();
-        c.editCharacterName("Ren Vanderpyl", 1);
+        frame.refreshCharacterList();
         
     
     }
