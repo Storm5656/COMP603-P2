@@ -51,125 +51,6 @@ public class CharacterHandler {
         }
     }
     
-    public void editCharacterName(String s, int id){
-        String sql = "UPDATE CHARACTERS "
-                + "SET NAME = ? "
-                + "WHERE CHAR_ID = ?";
-        Connection conn = DatabaseManager.getConnection();
-        
-        try (PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setString(1, s);
-            ps.setInt(2, id);
-            ps.executeUpdate();
-            
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-    }
-    public void editCharacterPronouns(String s, int id){
-        String sql = "UPDATE CHARACTERS "
-                + "SET PRONOUNS = ? "
-                + "WHERE CHAR_ID = ?";
-        Connection conn = DatabaseManager.getConnection();
-        
-        try (PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setString(1, s);
-            ps.setInt(2, id);
-            ps.executeUpdate();
-            
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-    }
-    public void editCharacterDOB(String s, int id){
-        String sql = "UPDATE CHARACTERS "
-                + "SET DOB = ? "
-                + "WHERE CHAR_ID = ?";
-        Connection conn = DatabaseManager.getConnection();
-        
-        try (PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setString(1, s);
-            ps.setInt(2, id);
-            ps.executeUpdate();
-            
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-    }
-    public void editCharacterAge(int age, int id){
-        String sql = "UPDATE CHARACTERS "
-                + "SET AGE = ? "
-                + "WHERE CHAR_ID = ?";
-        Connection conn = DatabaseManager.getConnection();
-        
-        try (PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setInt(1, age);
-            ps.setInt(2, id);
-            ps.executeUpdate();
-            
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-    }
-    public void editCharacterSpecies(String s, int id){
-        String sql = "UPDATE CHARACTERS "
-                + "SET SPECIES = ? "
-                + "WHERE CHAR_ID = ?";
-        Connection conn = DatabaseManager.getConnection();
-        
-        try (PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setString(1, s);
-            ps.setInt(2, id);
-            ps.executeUpdate();
-            
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-    }
-    public void editCharacterOccupation(String s, int id){
-        String sql = "UPDATE CHARACTERS "
-                + "SET OCCUPATION = ? "
-                + "WHERE CHAR_ID = ?";
-        Connection conn = DatabaseManager.getConnection();
-        
-        try (PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setString(1, s);
-            ps.setInt(2, id);
-            ps.executeUpdate();
-            
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-    }
-    public void editCharacterDescription(String s, int id){
-        String sql = "UPDATE CHARACTERS "
-                + "SET DESCRIPTION = ? "
-                + "WHERE CHAR_ID = ?";
-        Connection conn = DatabaseManager.getConnection();
-        
-        try (PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setString(1, s);
-            ps.setInt(2, id);
-            ps.executeUpdate();
-            
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-    }
-    
-    public void deleteCharacter(int id){
-        String sql = "DELETE FROM CHARACTERS WHERE CHAR_ID = ?";
-        Connection conn = DatabaseManager.getConnection();
-        
-        try (PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setInt(1, id);
-            ps.executeUpdate();
-            
-        }catch(SQLException ex){
-            ex.printStackTrace();
-        }
-    }
-    
     public String[] getAllCharacters(){
         List<String> list = new ArrayList<String>();
         String sql = "SELECT NAME FROM CHARACTERS";
@@ -232,9 +113,6 @@ public class CharacterHandler {
             ps.setInt(8, c.getId());
             
             ps.executeUpdate();
-            
-            
-            
         } catch(SQLException ex){
             ex.printStackTrace();
         }

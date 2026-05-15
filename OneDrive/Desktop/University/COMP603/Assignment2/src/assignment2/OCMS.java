@@ -17,6 +17,7 @@ public class OCMS extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(OCMS.class.getName());
     private Character selectedChar;
+    private Group selectedGroup;
 
     /**
      * Creates new form OCMS
@@ -95,7 +96,7 @@ public class OCMS extends javax.swing.JFrame {
         jSeparator5 = new javax.swing.JSeparator();
         jSeparator6 = new javax.swing.JSeparator();
         groupDetailsPanel = new javax.swing.JPanel();
-        charDetailsPanel.setVisible(false);
+        groupDetailsPanel.setVisible(false);
         jLabel14 = new javax.swing.JLabel();
         jSeparator7 = new javax.swing.JSeparator();
         jLabel20 = new javax.swing.JLabel();
@@ -103,7 +104,7 @@ public class OCMS extends javax.swing.JFrame {
         jScrollPane7 = new javax.swing.JScrollPane();
         descriptionInputTextArea1 = new javax.swing.JTextArea();
         jLabel21 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        createGroupBtn = new javax.swing.JButton();
         jSeparator8 = new javax.swing.JSeparator();
         jScrollPane10 = new javax.swing.JScrollPane();
         groupTagList = new javax.swing.JList<>();
@@ -683,11 +684,11 @@ public class OCMS extends javax.swing.JFrame {
         jLabel21.setText("Description:");
         jLabel21.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jButton2.setText("Create/Update Group");
-        jButton2.setBorder(null);
-        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jButton2.addActionListener(this::jButton2ActionPerformed);
+        createGroupBtn.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        createGroupBtn.setText("Create/Update Group");
+        createGroupBtn.setBorder(null);
+        createGroupBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        createGroupBtn.addActionListener(this::createGroupBtnActionPerformed);
 
         jSeparator8.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -727,7 +728,7 @@ public class OCMS extends javax.swing.JFrame {
             groupDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSeparator7, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(createGroupBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSeparator8)
             .addGroup(groupDetailsPanelLayout.createSequentialGroup()
                 .addContainerGap()
@@ -778,7 +779,7 @@ public class OCMS extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jButton2))
+                .addComponent(createGroupBtn))
         );
 
         javax.swing.GroupLayout gPanelLayout = new javax.swing.GroupLayout(gPanel);
@@ -1413,12 +1414,21 @@ public class OCMS extends javax.swing.JFrame {
         selectedChar = null;
     }//GEN-LAST:event_addCharBtnActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void createGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createGroupBtnActionPerformed
+        GroupHandler g = new GroupHandler();
+        String name = nameInputText1.getText();
+        String description = descriptionInputTextArea1.getText();
+        
+        g.createGroup(name, description);
+        
+        clearGroupInputs();
+        groupDetailsPanel.setVisible(false);
+    }//GEN-LAST:event_createGroupBtnActionPerformed
 
     private void addGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addGroupBtnActionPerformed
-        // TODO add your handling code here:
+        groupDetailsPanel.setVisible(true);
+        clearGroupInputs();
+        selectedGroup = null;
     }//GEN-LAST:event_addGroupBtnActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -1546,10 +1556,20 @@ public class OCMS extends javax.swing.JFrame {
     
     public void refreshCharacterList(){
         CharacterHandler c = new CharacterHandler();
-        
         characterList.setListData(c.getAllCharacters());
     }
     
+    public void clearGroupInputs(){
+        nameInputText1.setText("");
+        descriptionInputTextArea1.setText("");
+        
+        refreshGroupList();
+    }
+    
+    public void refreshGroupList(){
+        GroupHandler g = new GroupHandler();
+        groupList.setListData(g.getAllGroups());
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addCharBtn;
@@ -1565,6 +1585,7 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JList<String> charTagList;
     private javax.swing.JList<String> characterList;
     private javax.swing.JButton createCharacterBtn;
+    private javax.swing.JButton createGroupBtn;
     private javax.swing.JTextArea descriptionInputTextArea;
     private javax.swing.JTextArea descriptionInputTextArea1;
     private javax.swing.JTextField dobInputText;
@@ -1577,7 +1598,6 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JButton groupMenuBtn;
     private javax.swing.JList<String> groupTagList;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;

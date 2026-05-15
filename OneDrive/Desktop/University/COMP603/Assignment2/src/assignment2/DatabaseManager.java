@@ -5,8 +5,7 @@ import java.sql.*;
  * @author ren
  */
 public class DatabaseManager {
-    private static String dbPath = System.getProperty("user.home") + "/AppData/Roaming/CharacterManager/db";
-    private static final String URL = "jdbc:derby:" + dbPath + ";create=true";
+    private static final String URL = "jdbc:derby:CharacterDB;create=true";
     private static Connection conn;
     
     public static Connection getConnection() {

@@ -29,8 +29,7 @@ public class Assignment2 {
         // Set up
         DatabaseManager.establishConnection();
         frame.refreshCharacterList();
-        
-    
+        frame.refreshGroupList();
     }
     
 }
