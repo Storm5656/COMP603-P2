@@ -51,7 +51,7 @@ public class DatabaseManager {
             // Create group table
             s.executeUpdate("CREATE TABLE USER_GROUPS" +
                     "(GROUP_ID INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,"
-                    + "NAME VARCHAR(100) NOT NULL,"
+                    + "NAME VARCHAR(100) NOT NULL UNIQUE,"
                     + "DESCRIPTION VARCHAR(1500))");
             
             // Create tag table

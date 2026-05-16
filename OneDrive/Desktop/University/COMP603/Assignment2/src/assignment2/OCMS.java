@@ -7,6 +7,7 @@ package assignment2;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.List;
 import javax.swing.JSplitPane;
 
 /**
@@ -18,6 +19,8 @@ public class OCMS extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(OCMS.class.getName());
     private Character selectedChar;
     private Group selectedGroup;
+    private static CharacterHandler ch = new CharacterHandler();
+    private static GroupHandler gh = new GroupHandler();
 
     /**
      * Creates new form OCMS
@@ -111,8 +114,8 @@ public class OCMS extends javax.swing.JFrame {
         jLabel24 = new javax.swing.JLabel();
         jScrollPane8 = new javax.swing.JScrollPane();
         groupCharList = new javax.swing.JList<>();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton3 = new javax.swing.JButton();
+        groupAddCharComboBox = new javax.swing.JComboBox<>();
+        addCharToGroupBtn = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
         rPanel = new javax.swing.JPanel();
         relListPanel = new javax.swing.JPanel();
@@ -621,6 +624,7 @@ public class OCMS extends javax.swing.JFrame {
 
         groupList.setBorder(null);
         groupList.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        groupList.addListSelectionListener(this::groupListValueChanged);
         jScrollPane6.setViewportView(groupList);
 
         jSeparator5.setForeground(new java.awt.Color(0, 0, 0));
@@ -709,13 +713,13 @@ public class OCMS extends javax.swing.JFrame {
         groupCharList.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jScrollPane8.setViewportView(groupCharList);
 
-        jComboBox1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jComboBox1.setBorder(null);
+        groupAddCharComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        groupAddCharComboBox.setBorder(null);
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton3.setText("Add Character to Group");
-        jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jButton3.addActionListener(this::jButton3ActionPerformed);
+        addCharToGroupBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        addCharToGroupBtn.setText("Add/Remove Character to Group");
+        addCharToGroupBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        addCharToGroupBtn.addActionListener(this::addCharToGroupBtnActionPerformed);
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -743,8 +747,8 @@ public class OCMS extends javax.swing.JFrame {
                     .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(50, 50, 50)
                 .addGroup(groupDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(groupAddCharComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addCharToGroupBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE))
                 .addContainerGap())
@@ -765,9 +769,9 @@ public class OCMS extends javax.swing.JFrame {
                     .addGroup(groupDetailsPanelLayout.createSequentialGroup()
                         .addComponent(jScrollPane8)
                         .addGap(0, 0, 0)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(groupAddCharComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(jButton3))
+                        .addComponent(addCharToGroupBtn))
                     .addGroup(groupDetailsPanelLayout.createSequentialGroup()
                         .addComponent(jLabel21)
                         .addGap(0, 0, 0)
@@ -1415,11 +1419,16 @@ public class OCMS extends javax.swing.JFrame {
     }//GEN-LAST:event_addCharBtnActionPerformed
 
     private void createGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createGroupBtnActionPerformed
-        GroupHandler g = new GroupHandler();
         String name = nameInputText1.getText();
         String description = descriptionInputTextArea1.getText();
         
-        g.createGroup(name, description);
+        if(selectedGroup == null){
+            gh.createGroup(name, description);
+        }
+        else{
+            Group g = new Group(selectedGroup.getId(), name, description);
+            gh.editGroup(g);
+        }
         
         clearGroupInputs();
         groupDetailsPanel.setVisible(false);
@@ -1429,11 +1438,28 @@ public class OCMS extends javax.swing.JFrame {
         groupDetailsPanel.setVisible(true);
         clearGroupInputs();
         selectedGroup = null;
+        refreshAddCharComboBox();
+        refreshGroupCharList();
     }//GEN-LAST:event_addGroupBtnActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void addCharToGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCharToGroupBtnActionPerformed
+        String charName = groupAddCharComboBox.getSelectedItem().toString();
+        Character c = ch.getCharacter(charName);
+        
+        //If character is already in group, remove from group
+        for(int i = 0; i < groupCharList.getModel().getSize(); i++){
+            if(charName.equals(groupCharList.getModel().getElementAt(i))){
+                ch.removeCharacterFromGroup(c, selectedGroup);
+                
+                refreshGroupCharList();
+                groupAddCharComboBox.setSelectedIndex(-1);
+                return;
+            }
+        }
+        ch.addCharacterToGroup(c, selectedGroup);
+        refreshGroupCharList();
+        groupAddCharComboBox.setSelectedIndex(-1);
+    }//GEN-LAST:event_addCharToGroupBtnActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
@@ -1444,7 +1470,6 @@ public class OCMS extends javax.swing.JFrame {
     }//GEN-LAST:event_addGroupBtn1ActionPerformed
 
     private void createCharacterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createCharacterBtnActionPerformed
-        CharacterHandler c = new CharacterHandler();
         try{
             int age;
 
@@ -1463,11 +1488,11 @@ public class OCMS extends javax.swing.JFrame {
             String desc = descriptionInputTextArea.getText();
 
             if(selectedChar == null){
-                c.createCharacter(name, pro, dob, age, spe, occ, desc);
+                ch.createCharacter(name, pro, dob, age, spe, occ, desc);
             }
             else{
                 Character newC = new Character(selectedChar.getId(), name, pro, age, dob, spe, occ, desc);
-                c.editCharacter(newC);
+                ch.editCharacter(newC);
             }
             
             clearCharacterInputs();
@@ -1480,7 +1505,6 @@ public class OCMS extends javax.swing.JFrame {
 
     private void characterListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_characterListValueChanged
         String selected = characterList.getSelectedValue();
-        CharacterHandler ch = new CharacterHandler();
         Character c = ch.getCharacter(selected);
         selectedChar = c;
         
@@ -1495,6 +1519,20 @@ public class OCMS extends javax.swing.JFrame {
             descriptionInputTextArea.setText(c.getDescription());
         }
     }//GEN-LAST:event_characterListValueChanged
+
+    private void groupListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_groupListValueChanged
+        String selected = groupList.getSelectedValue();
+        GroupHandler gh = new GroupHandler();
+        Group g = gh.getGroup(selected);
+        selectedGroup = g;
+        
+        groupDetailsPanel.setVisible(true);
+        if(g != null){
+            nameInputText1.setText(g.getName());
+            descriptionInputTextArea1.setText(g.getDescription());
+            refreshGroupCharList();
+        }
+    }//GEN-LAST:event_groupListValueChanged
     /**
      * @param args the command line arguments
      */
@@ -1518,6 +1556,7 @@ public class OCMS extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new OCMS().setVisible(true));
+        
     }
     
     public void setSplitHeight(){
@@ -1555,24 +1594,32 @@ public class OCMS extends javax.swing.JFrame {
     }
     
     public void refreshCharacterList(){
-        CharacterHandler c = new CharacterHandler();
-        characterList.setListData(c.getAllCharacters());
+        characterList.setListData(ch.getAllCharacters());
     }
     
     public void clearGroupInputs(){
         nameInputText1.setText("");
         descriptionInputTextArea1.setText("");
-        
+        groupCharList.setListData(new String[0]);
         refreshGroupList();
     }
     
     public void refreshGroupList(){
-        GroupHandler g = new GroupHandler();
-        groupList.setListData(g.getAllGroups());
+        groupList.setListData(gh.getAllGroups());
+    }
+    public void refreshGroupCharList(){
+        if(selectedGroup != null){
+            groupCharList.setListData(gh.getAllCharInGroup(selectedGroup));
+        }
+    }
+    
+    public void refreshAddCharComboBox(){
+        groupAddCharComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(ch.getAllCharacters()));
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addCharBtn;
+    private javax.swing.JButton addCharToGroupBtn;
     private javax.swing.JButton addGroupBtn;
     private javax.swing.JButton addGroupBtn1;
     private javax.swing.JTextField ageInputText;
@@ -1591,6 +1638,7 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JTextField dobInputText;
     private javax.swing.JButton exitBtn;
     private javax.swing.JPanel gPanel;
+    private javax.swing.JComboBox<String> groupAddCharComboBox;
     private javax.swing.JList<String> groupCharList;
     private javax.swing.JPanel groupDetailsPanel;
     private javax.swing.JList<String> groupList;
@@ -1598,13 +1646,11 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JButton groupMenuBtn;
     private javax.swing.JList<String> groupTagList;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;

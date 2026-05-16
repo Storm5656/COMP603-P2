@@ -117,5 +117,34 @@ public class CharacterHandler {
             ex.printStackTrace();
         }
     }
+
+    public void addCharacterToGroup(Character c, Group g) {
+        if (g == null || c == null){
+            return;
+        }
+        Connection conn = DatabaseManager.getConnection();
+        String sql = "INSERT INTO CHARACTER_GROUPS VALUES (?,?)";
+        try (PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, c.getId());
+            ps.setInt(2, g.getId());
+            ps.executeUpdate();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
     
+    public void removeCharacterFromGroup(Character c, Group g){
+        if (g == null || c == null){
+            return;
+        }
+        Connection conn = DatabaseManager.getConnection();
+        String sql = "DELETE FROM CHARACTER_GROUPS WHERE CHARACTER_ID = ? AND GROUP_ID = ?";
+        try(PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, c.getId());
+            ps.setInt(2, g.getId());
+            ps.executeUpdate();
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
 }

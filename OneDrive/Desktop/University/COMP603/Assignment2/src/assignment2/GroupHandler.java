@@ -47,6 +47,66 @@ public class GroupHandler {
         return list.toArray(new String[0]);
     }
     
-    // add character to group
+    public Group getGroup(String n){
+        String sql = "SELECT * FROM USER_GROUPS WHERE NAME = ?";
+        Connection conn = DatabaseManager.getConnection();
+        Group g = null;
+        try(PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, n);
+            
+            ResultSet rs = ps.executeQuery();
+            
+            if(rs.next()){
+                int id = rs.getInt("GROUP_ID");
+                String name = rs.getString("NAME");
+                String desc = rs.getString("DESCRIPTION");
+                g = new Group(id, name, desc);
+            }
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return g;
+    }
+    
+    public String[] getAllCharInGroup(Group g){
+        if (g == null){
+            return null;
+        }
+        List<String> charNames = new ArrayList<String>();
+        
+        String sql = "SELECT c.NAME FROM CHARACTERS c "
+                + "JOIN CHARACTER_GROUPS cg "
+                + "ON c.CHAR_ID = cg.CHARACTER_ID "
+                + "WHERE cg.GROUP_ID = ?";
+        Connection conn = DatabaseManager.getConnection();
+        try(PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, g.getId());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                charNames.add(rs.getString(1));
+            }
+            
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return charNames.toArray(new String[0]);
+    }
+    
+    public void editGroup(Group g){
+        String sql = "UPDATE USER_GROUPS "
+                + "SET NAME = ?, DESCRIPTION = ? "
+                + "WHERE GROUP_ID = ?";
+        Connection conn = DatabaseManager.getConnection();
+        
+        try (PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, g.getName());
+            ps.setString(2, g.getDescription());
+            ps.setInt(3, g.getId());
+            
+            ps.executeUpdate();
+        } catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
     
 }
