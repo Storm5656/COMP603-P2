@@ -147,4 +147,23 @@ public class CharacterHandler {
             ex.printStackTrace();
         }
     }
+
+    public String[] getGroups(Character c) {
+        List<String> groups = new ArrayList<String>();
+        Connection conn = DatabaseManager.getConnection();
+        String sql = "SELECT g.NAME FROM USER_GROUPS g "+
+                "JOIN CHARACTER_GROUPS cg ON g.GROUP_ID = cg.GROUP_ID "+
+                "WHERE cg.CHARACTER_ID = ?";
+        try(PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, c.getId());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                groups.add(rs.getString("NAME"));
+            }
+        }catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        
+        return groups.toArray(new String[0]);
+    }
 }

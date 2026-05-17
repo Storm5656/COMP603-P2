@@ -8,6 +8,7 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 
 /**
@@ -553,11 +554,19 @@ public class OCMS extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(charDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(charDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(charDetailsPanelLayout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addGap(0, 0, 0)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(charDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(charDetailsPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addGap(0, 0, 0)
+                        .addComponent(jScrollPane2))
+                    .addGroup(charDetailsPanelLayout.createSequentialGroup()
                         .addGap(0, 0, 0)
                         .addComponent(jLabel11)
                         .addGap(0, 0, 0)
@@ -565,15 +574,7 @@ public class OCMS extends javax.swing.JFrame {
                         .addGap(0, 0, 0)
                         .addComponent(jLabel12)
                         .addGap(0, 0, 0)
-                        .addComponent(jScrollPane5))
-                    .addGroup(charDetailsPanelLayout.createSequentialGroup()
-                        .addGroup(charDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, 0)
-                        .addComponent(jLabel9)
-                        .addGap(0, 0, 0)
-                        .addComponent(jScrollPane2)))
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -1418,6 +1419,11 @@ public class OCMS extends javax.swing.JFrame {
         selectedChar = null;
     }//GEN-LAST:event_addCharBtnActionPerformed
 
+    /**
+     * Create a group if there is no selected group, 
+     * Otherwise edit the selected group
+     * @param evt 
+     */
     private void createGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createGroupBtnActionPerformed
         String name = nameInputText1.getText();
         String description = descriptionInputTextArea1.getText();
@@ -1442,8 +1448,16 @@ public class OCMS extends javax.swing.JFrame {
         refreshGroupCharList();
     }//GEN-LAST:event_addGroupBtnActionPerformed
 
+    /**
+     * Add a character to the selected group
+     * If the character is already in the group, remove it from the group
+     * @param evt 
+     */
     private void addCharToGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCharToGroupBtnActionPerformed
         String charName = groupAddCharComboBox.getSelectedItem().toString();
+        if (charName == null) {
+            return;
+        }
         Character c = ch.getCharacter(charName);
         
         //If character is already in group, remove from group
@@ -1456,7 +1470,13 @@ public class OCMS extends javax.swing.JFrame {
                 return;
             }
         }
-        ch.addCharacterToGroup(c, selectedGroup);
+        
+        if(selectedGroup == null){
+            JOptionPane.showMessageDialog(null, "Please select a group before adding characters!", "Error", JOptionPane.WARNING_MESSAGE);
+        }
+        else{
+            ch.addCharacterToGroup(c, selectedGroup);
+        }
         refreshGroupCharList();
         groupAddCharComboBox.setSelectedIndex(-1);
     }//GEN-LAST:event_addCharToGroupBtnActionPerformed
@@ -1469,6 +1489,11 @@ public class OCMS extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_addGroupBtn1ActionPerformed
 
+    /**
+     * Create a character if there is no selected character
+     * If there is a selected character, then edit that character
+     * @param evt 
+     */
     private void createCharacterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createCharacterBtnActionPerformed
         try{
             int age;
@@ -1517,6 +1542,7 @@ public class OCMS extends javax.swing.JFrame {
             speciesInputText.setText(c.getSpecies());
             occupationInputText.setText(c.getOccupation());
             descriptionInputTextArea.setText(c.getDescription());
+            charGroupList.setListData(ch.getGroups(c));
         }
     }//GEN-LAST:event_characterListValueChanged
 
@@ -1531,6 +1557,7 @@ public class OCMS extends javax.swing.JFrame {
             nameInputText1.setText(g.getName());
             descriptionInputTextArea1.setText(g.getDescription());
             refreshGroupCharList();
+            refreshAddCharComboBox();
         }
     }//GEN-LAST:event_groupListValueChanged
     /**
@@ -1589,7 +1616,7 @@ public class OCMS extends javax.swing.JFrame {
         speciesInputText.setText("");
         occupationInputText.setText("");
         descriptionInputTextArea.setText("");
-        
+        charGroupList.setListData(new String[0]);
         refreshCharacterList();
     }
     
