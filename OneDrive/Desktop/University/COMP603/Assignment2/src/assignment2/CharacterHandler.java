@@ -96,6 +96,32 @@ public class CharacterHandler {
         return c;
     }
     
+    public Character getCharacter(int id){
+        String sql = "SELECT * FROM CHARACTERS WHERE CHAR_ID = ?";
+        Character c = null;
+        Connection conn = DatabaseManager.getConnection();
+        
+        try (PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()){
+                String name = rs.getString("NAME");
+                String pronouns = rs.getString("PRONOUNS");
+                int age = rs.getInt("AGE");
+                String dob = rs.getString("DOB");
+                String species = rs.getString("SPECIES");
+                String occupation = rs.getString("OCCUPATION");
+                String desc = rs.getString("DESCRIPTION");
+                c = new Character(id, name, pronouns, age, dob, species, occupation, desc);
+            }
+            
+        } catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return c;
+    }
+    
     public void editCharacter(Character c){
         String sql = "UPDATE CHARACTERS "
                 + "SET NAME = ?, PRONOUNS = ?, AGE = ?, DOB = ?, SPECIES = ?, OCCUPATION = ?, DESCRIPTION = ? "

@@ -7,7 +7,6 @@ package assignment2;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 
@@ -20,8 +19,11 @@ public class OCMS extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(OCMS.class.getName());
     private Character selectedChar;
     private Group selectedGroup;
+    private Relationship selectedRel;
+    private Character selectedRelChar;
     private static CharacterHandler ch = new CharacterHandler();
     private static GroupHandler gh = new GroupHandler();
+    private static RelationshipHandler rh = new RelationshipHandler();
 
     /**
      * Creates new form OCMS
@@ -121,33 +123,33 @@ public class OCMS extends javax.swing.JFrame {
         rPanel = new javax.swing.JPanel();
         relListPanel = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
-        addGroupBtn1 = new javax.swing.JButton();
+        addRelBtn = new javax.swing.JButton();
         jSeparator14 = new javax.swing.JSeparator();
         jSeparator15 = new javax.swing.JSeparator();
         jScrollPane11 = new javax.swing.JScrollPane();
         relList = new javax.swing.JList<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jButton6 = new javax.swing.JButton();
+        relSelectCharacterComboBox = new javax.swing.JComboBox<>();
+        relSelectCharacterBtn = new javax.swing.JButton();
         jLabel34 = new javax.swing.JLabel();
         jSeparator18 = new javax.swing.JSeparator();
         jSeparator19 = new javax.swing.JSeparator();
-        jPanel3 = new javax.swing.JPanel();
+        relDetailsPanel = new javax.swing.JPanel();
         jLabel23 = new javax.swing.JLabel();
         jSeparator16 = new javax.swing.JSeparator();
         jLabel18 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        relChar1ComboBox = new javax.swing.JComboBox<>();
         jLabel26 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox<>();
+        relChar2ComboBox = new javax.swing.JComboBox<>();
         jLabel27 = new javax.swing.JLabel();
         jSeparator12 = new javax.swing.JSeparator();
-        jTextField1 = new javax.swing.JTextField();
+        dynamic1TextBox = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        dynamic2TextBox = new javax.swing.JTextField();
         jLabel25 = new javax.swing.JLabel();
         jScrollPane12 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        relDescriptionTextArea = new javax.swing.JTextArea();
         jSeparator13 = new javax.swing.JSeparator();
-        jButton5 = new javax.swing.JButton();
+        createRelBtn = new javax.swing.JButton();
         tPanel = new javax.swing.JPanel();
         tagListPanel = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
@@ -567,7 +569,6 @@ public class OCMS extends javax.swing.JFrame {
                         .addGap(0, 0, 0)
                         .addComponent(jScrollPane2))
                     .addGroup(charDetailsPanelLayout.createSequentialGroup()
-                        .addGap(0, 0, 0)
                         .addComponent(jLabel11)
                         .addGap(0, 0, 0)
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -716,6 +717,15 @@ public class OCMS extends javax.swing.JFrame {
 
         groupAddCharComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         groupAddCharComboBox.setBorder(null);
+        groupAddCharComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                groupAddCharComboBoxPopupMenuWillBecomeVisible(evt);
+            }
+        });
 
         addCharToGroupBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         addCharToGroupBtn.setText("Add/Remove Character to Group");
@@ -742,7 +752,7 @@ public class OCMS extends javax.swing.JFrame {
                     .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, groupDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(nameInputText1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -819,13 +829,13 @@ public class OCMS extends javax.swing.JFrame {
         jLabel19.setText("Character Relationships");
         jLabel19.setPreferredSize(new java.awt.Dimension(156, 50));
 
-        addGroupBtn1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        addGroupBtn1.setText("+");
-        addGroupBtn1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        addGroupBtn1.setBorderPainted(false);
-        addGroupBtn1.setFocusPainted(false);
-        addGroupBtn1.setPreferredSize(new java.awt.Dimension(60, 34));
-        addGroupBtn1.addActionListener(this::addGroupBtn1ActionPerformed);
+        addRelBtn.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        addRelBtn.setText("+");
+        addRelBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        addRelBtn.setBorderPainted(false);
+        addRelBtn.setFocusPainted(false);
+        addRelBtn.setPreferredSize(new java.awt.Dimension(60, 34));
+        addRelBtn.addActionListener(this::addRelBtnActionPerformed);
 
         jSeparator14.setForeground(new java.awt.Color(0, 0, 0));
 
@@ -836,14 +846,25 @@ public class OCMS extends javax.swing.JFrame {
 
         relList.setBorder(null);
         relList.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        relList.addListSelectionListener(this::relListValueChanged);
         jScrollPane11.setViewportView(relList);
 
-        jComboBox2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jComboBox2.setBorder(null);
+        relSelectCharacterComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        relSelectCharacterComboBox.setBorder(null);
+        relSelectCharacterComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                relSelectCharacterComboBoxPopupMenuWillBecomeVisible(evt);
+            }
+        });
 
-        jButton6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton6.setText("Select Character");
-        jButton6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        relSelectCharacterBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        relSelectCharacterBtn.setText("Select Character");
+        relSelectCharacterBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        relSelectCharacterBtn.addActionListener(this::relSelectCharacterBtnActionPerformed);
 
         jLabel34.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -863,14 +884,14 @@ public class OCMS extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(jSeparator15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(addGroupBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(addRelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addComponent(jSeparator14, javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(relListPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(relListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(relSelectCharacterComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(relSelectCharacterBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
             .addComponent(jLabel34, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSeparator18)
@@ -881,13 +902,13 @@ public class OCMS extends javax.swing.JFrame {
             .addGroup(relListPanelLayout.createSequentialGroup()
                 .addGroup(relListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addGroupBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(addRelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator15))
                 .addComponent(jSeparator14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(relSelectCharacterComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jButton6)
+                .addComponent(relSelectCharacterBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -899,7 +920,7 @@ public class OCMS extends javax.swing.JFrame {
                 .addGap(0, 0, 0))
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        relDetailsPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
         jLabel23.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -912,15 +933,33 @@ public class OCMS extends javax.swing.JFrame {
         jLabel18.setText("Character 1: ");
         jLabel18.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jComboBox3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jComboBox3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        relChar1ComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        relChar1ComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        relChar1ComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                relChar1ComboBoxPopupMenuWillBecomeVisible(evt);
+            }
+        });
 
         jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel26.setText("Character 2: ");
         jLabel26.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jComboBox4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jComboBox4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        relChar2ComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        relChar2ComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        relChar2ComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                relChar2ComboBoxPopupMenuWillBecomeVisible(evt);
+            }
+        });
 
         jLabel27.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel27.setText("Dynamic of character 1: ");
@@ -928,15 +967,15 @@ public class OCMS extends javax.swing.JFrame {
 
         jSeparator12.setForeground(java.awt.Color.black);
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        dynamic1TextBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        dynamic1TextBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel28.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel28.setText("Dynamic of character 2: ");
         jLabel28.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextField2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        dynamic2TextBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        dynamic2TextBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel25.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -946,76 +985,77 @@ public class OCMS extends javax.swing.JFrame {
         jScrollPane12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPane12.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(5);
-        jTextArea1.setBorder(null);
-        jScrollPane12.setViewportView(jTextArea1);
+        relDescriptionTextArea.setColumns(20);
+        relDescriptionTextArea.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        relDescriptionTextArea.setLineWrap(true);
+        relDescriptionTextArea.setRows(5);
+        relDescriptionTextArea.setBorder(null);
+        jScrollPane12.setViewportView(relDescriptionTextArea);
 
         jSeparator13.setForeground(java.awt.Color.black);
 
-        jButton5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jButton5.setText("Create/Update Relationship");
-        jButton5.setBorder(null);
+        createRelBtn.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        createRelBtn.setText("Create/Update Relationship");
+        createRelBtn.setBorder(null);
+        createRelBtn.addActionListener(this::createRelBtnActionPerformed);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout relDetailsPanelLayout = new javax.swing.GroupLayout(relDetailsPanel);
+        relDetailsPanel.setLayout(relDetailsPanelLayout);
+        relDetailsPanelLayout.setHorizontalGroup(
+            relDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSeparator16)
             .addComponent(jSeparator12)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, relDetailsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(relDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane12)
                     .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, relDetailsPanelLayout.createSequentialGroup()
                         .addComponent(jLabel18)
                         .addGap(0, 0, 0)
-                        .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(relChar1ComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, relDetailsPanelLayout.createSequentialGroup()
                         .addComponent(jLabel26)
                         .addGap(0, 0, 0)
-                        .addComponent(jComboBox4, 0, 1167, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(relChar2ComboBox, 0, 1167, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, relDetailsPanelLayout.createSequentialGroup()
                         .addComponent(jLabel27)
                         .addGap(0, 0, 0)
-                        .addComponent(jTextField1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                        .addComponent(dynamic1TextBox))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, relDetailsPanelLayout.createSequentialGroup()
                         .addComponent(jLabel28)
                         .addGap(0, 0, 0)
-                        .addComponent(jTextField2)))
+                        .addComponent(dynamic2TextBox)))
                 .addContainerGap())
             .addComponent(jSeparator13)
-            .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(createRelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        relDetailsPanelLayout.setVerticalGroup(
+            relDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(relDetailsPanelLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
                 .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jSeparator16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox3)
+                .addGroup(relDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(relChar1ComboBox)
                     .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, 0)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBox4)
+                .addGroup(relDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(relChar2ComboBox)
                     .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(relDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1))
+                    .addComponent(dynamic1TextBox))
                 .addGap(0, 0, 0)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(relDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField2))
+                    .addComponent(dynamic2TextBox))
                 .addGap(0, 0, 0)
                 .addComponent(jLabel25)
                 .addGap(0, 0, 0)
@@ -1023,7 +1063,7 @@ public class OCMS extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jButton5)
+                .addComponent(createRelBtn)
                 .addGap(0, 0, 0))
         );
 
@@ -1035,7 +1075,7 @@ public class OCMS extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(relListPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(relDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         rPanelLayout.setVerticalGroup(
@@ -1043,10 +1083,12 @@ public class OCMS extends javax.swing.JFrame {
             .addGroup(rPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(rPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(relDetailsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(relListPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        relDetailsPanel.setVisible(false);
 
         mainPanel.add(rPanel, "relationship");
 
@@ -1382,7 +1424,6 @@ public class OCMS extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     private void exitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBtnActionPerformed
         DatabaseManager.closeConnections();
         this.dispose();
@@ -1444,7 +1485,6 @@ public class OCMS extends javax.swing.JFrame {
         groupDetailsPanel.setVisible(true);
         clearGroupInputs();
         selectedGroup = null;
-        refreshAddCharComboBox();
         refreshGroupCharList();
     }//GEN-LAST:event_addGroupBtnActionPerformed
 
@@ -1485,9 +1525,12 @@ public class OCMS extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void addGroupBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addGroupBtn1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addGroupBtn1ActionPerformed
+    private void addRelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRelBtnActionPerformed
+        relDetailsPanel.setVisible(true);
+        clearRelInputs();
+        selectedRel = null;
+        refreshRelList();
+    }//GEN-LAST:event_addRelBtnActionPerformed
 
     /**
      * Create a character if there is no selected character
@@ -1557,9 +1600,76 @@ public class OCMS extends javax.swing.JFrame {
             nameInputText1.setText(g.getName());
             descriptionInputTextArea1.setText(g.getDescription());
             refreshGroupCharList();
-            refreshAddCharComboBox();
         }
     }//GEN-LAST:event_groupListValueChanged
+
+    private void groupAddCharComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_groupAddCharComboBoxPopupMenuWillBecomeVisible
+        refreshCharacterComboBox(groupAddCharComboBox);
+    }//GEN-LAST:event_groupAddCharComboBoxPopupMenuWillBecomeVisible
+
+    private void relSelectCharacterComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_relSelectCharacterComboBoxPopupMenuWillBecomeVisible
+        refreshCharacterComboBox(relSelectCharacterComboBox);
+    }//GEN-LAST:event_relSelectCharacterComboBoxPopupMenuWillBecomeVisible
+
+    private void relChar1ComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_relChar1ComboBoxPopupMenuWillBecomeVisible
+        refreshCharacterComboBox(relChar1ComboBox);
+    }//GEN-LAST:event_relChar1ComboBoxPopupMenuWillBecomeVisible
+
+    private void relChar2ComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_relChar2ComboBoxPopupMenuWillBecomeVisible
+        refreshCharacterComboBox(relChar2ComboBox);
+    }//GEN-LAST:event_relChar2ComboBoxPopupMenuWillBecomeVisible
+
+    private void relSelectCharacterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relSelectCharacterBtnActionPerformed
+        if(relSelectCharacterComboBox.getSelectedIndex() != -1){
+            selectedRelChar = ch.getCharacter(relSelectCharacterComboBox.getSelectedItem().toString());
+            refreshRelList();
+        }
+    }//GEN-LAST:event_relSelectCharacterBtnActionPerformed
+
+    private void createRelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createRelBtnActionPerformed
+        if(relChar1ComboBox.getSelectedIndex() != -1 && relChar2ComboBox.getSelectedIndex() != -1){
+            Character c1 = ch.getCharacter(relChar1ComboBox.getSelectedItem().toString());
+            Character c2 = ch.getCharacter(relChar2ComboBox.getSelectedItem().toString());
+            
+            if(c1.getId() == c2.getId()){
+                JOptionPane.showMessageDialog(null, "Select two different characters for the relationship");
+            } else{
+                String d1 = dynamic1TextBox.getText();
+                String d2 = dynamic2TextBox.getText();
+                String description = relDescriptionTextArea.getText();
+                
+                if (selectedRel == null){
+                    rh.createRelationship(c1, c2, d1, d2, description);
+                } else{
+                    rh.editRelationship(new Relationship(selectedRel.getId(), c1, c2, d1, d2, description));
+                }
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Select two different characters for the relationship");
+        }
+        
+        clearRelInputs();
+        refreshRelList();
+        selectedRel = null;
+        relDetailsPanel.setVisible(false);
+    }//GEN-LAST:event_createRelBtnActionPerformed
+
+    private void relListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_relListValueChanged
+        if (relList.getSelectedValue() == null) {
+            return;
+        }
+        
+        selectedRel = rh.getRelationship(relList.getSelectedValue().toString());
+        refreshCharacterComboBox(relChar1ComboBox);
+        refreshCharacterComboBox(relChar2ComboBox);
+        relDetailsPanel.setVisible(true);
+        
+        relChar1ComboBox.setSelectedItem(selectedRel.getChar1().getName());
+        relChar2ComboBox.setSelectedItem(selectedRel.getChar2().getName());
+        dynamic1TextBox.setText(selectedRel.getDynamic1());
+        dynamic2TextBox.setText(selectedRel.getDynamic2());
+        relDescriptionTextArea.setText(selectedRel.getDescription());
+    }//GEN-LAST:event_relListValueChanged
     /**
      * @param args the command line arguments
      */
@@ -1631,6 +1741,14 @@ public class OCMS extends javax.swing.JFrame {
         refreshGroupList();
     }
     
+    public void clearRelInputs(){
+        relChar1ComboBox.setSelectedIndex(-1);
+        relChar2ComboBox.setSelectedIndex(-1);
+        dynamic1TextBox.setText("");
+        dynamic2TextBox.setText("");
+        relDescriptionTextArea.setText("");
+    }
+    
     public void refreshGroupList(){
         groupList.setListData(gh.getAllGroups());
     }
@@ -1640,15 +1758,22 @@ public class OCMS extends javax.swing.JFrame {
         }
     }
     
-    public void refreshAddCharComboBox(){
-        groupAddCharComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(ch.getAllCharacters()));
+    public void refreshRelList(){
+        if(selectedRelChar != null){
+            relList.setListData(rh.getCharRelationships(selectedRelChar));
+        }
     }
+    
+    public void refreshCharacterComboBox(javax.swing.JComboBox<String> combo){
+        combo.setModel(new javax.swing.DefaultComboBoxModel<>(ch.getAllCharacters()));
+    }
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addCharBtn;
     private javax.swing.JButton addCharToGroupBtn;
     private javax.swing.JButton addGroupBtn;
-    private javax.swing.JButton addGroupBtn1;
+    private javax.swing.JButton addRelBtn;
     private javax.swing.JTextField ageInputText;
     private javax.swing.JPanel cPanel;
     private javax.swing.JPanel charDetailsPanel;
@@ -1660,9 +1785,12 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JList<String> characterList;
     private javax.swing.JButton createCharacterBtn;
     private javax.swing.JButton createGroupBtn;
+    private javax.swing.JButton createRelBtn;
     private javax.swing.JTextArea descriptionInputTextArea;
     private javax.swing.JTextArea descriptionInputTextArea1;
     private javax.swing.JTextField dobInputText;
+    private javax.swing.JTextField dynamic1TextBox;
+    private javax.swing.JTextField dynamic2TextBox;
     private javax.swing.JButton exitBtn;
     private javax.swing.JPanel gPanel;
     private javax.swing.JComboBox<String> groupAddCharComboBox;
@@ -1674,13 +1802,8 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JList<String> groupTagList;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1722,7 +1845,6 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JList<String> jList2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
@@ -1761,9 +1883,6 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JTextField nameInputText;
     private javax.swing.JTextField nameInputText1;
@@ -1775,9 +1894,15 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JTextField occupationInputText1;
     private javax.swing.JTextField pronounsInputText;
     private javax.swing.JPanel rPanel;
+    private javax.swing.JComboBox<String> relChar1ComboBox;
+    private javax.swing.JComboBox<String> relChar2ComboBox;
+    private javax.swing.JTextArea relDescriptionTextArea;
+    private javax.swing.JPanel relDetailsPanel;
     private javax.swing.JList<String> relList;
     private javax.swing.JPanel relListPanel;
     private javax.swing.JButton relMenuBtn;
+    private javax.swing.JButton relSelectCharacterBtn;
+    private javax.swing.JComboBox<String> relSelectCharacterComboBox;
     private javax.swing.JPanel sPanel;
     private javax.swing.JButton searchMenuBtn;
     private javax.swing.JTextField speciesInputText;

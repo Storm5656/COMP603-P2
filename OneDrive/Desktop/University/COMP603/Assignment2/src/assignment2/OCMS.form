@@ -528,7 +528,6 @@
                                           <Component id="jScrollPane2" max="32767" attributes="0"/>
                                       </Group>
                                       <Group type="102" attributes="0">
-                                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                                           <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                                           <Component id="jScrollPane4" min="-2" pref="218" max="-2" attributes="0"/>
@@ -1193,7 +1192,7 @@
                                       <Component id="jLabel24" alignment="0" max="32767" attributes="0"/>
                                       <Component id="jScrollPane7" alignment="0" max="32767" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
-                                          <Component id="jLabel20" min="-2" pref="168" max="-2" attributes="0"/>
+                                          <Component id="jLabel20" pref="168" max="32767" attributes="0"/>
                                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                           <Component id="nameInputText1" min="-2" pref="168" max="-2" attributes="0"/>
                                       </Group>
@@ -1450,6 +1449,9 @@
                               <Border info="null"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="popupMenuWillBecomeVisible" listener="javax.swing.event.PopupMenuListener" parameters="javax.swing.event.PopupMenuEvent" handler="groupAddCharComboBoxPopupMenuWillBecomeVisible"/>
+                          </Events>
                           <AuxValues>
                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                           </AuxValues>
@@ -1507,7 +1509,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="relListPanel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jPanel3" max="32767" attributes="0"/>
+                              <Component id="relDetailsPanel" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -1517,7 +1519,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jPanel3" max="32767" attributes="0"/>
+                                  <Component id="relDetailsPanel" max="32767" attributes="0"/>
                                   <Component id="relListPanel" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -1543,15 +1545,15 @@
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                                   <Component id="jSeparator15" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                                  <Component id="addGroupBtn1" max="-2" attributes="0"/>
+                                  <Component id="addRelBtn" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jSeparator14" alignment="1" max="32767" attributes="0"/>
                               <Component id="jScrollPane11" alignment="0" min="-2" pref="360" max="-2" attributes="0"/>
                               <Group type="102" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jComboBox2" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jButton6" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="relSelectCharacterComboBox" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="relSelectCharacterBtn" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
@@ -1565,14 +1567,14 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="jLabel19" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="addGroupBtn1" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="addRelBtn" alignment="0" max="32767" attributes="0"/>
                                       <Component id="jSeparator15" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                                   <Component id="jSeparator14" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="jComboBox2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="relSelectCharacterComboBox" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                                  <Component id="jButton6" min="-2" max="-2" attributes="0"/>
+                                  <Component id="relSelectCharacterBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="jSeparator18" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
@@ -1599,7 +1601,7 @@
                             </Property>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JButton" name="addGroupBtn1">
+                        <Component class="javax.swing.JButton" name="addRelBtn">
                           <Properties>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Segoe UI" size="24" style="1"/>
@@ -1617,7 +1619,7 @@
                             </Property>
                           </Properties>
                           <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addGroupBtn1ActionPerformed"/>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addRelBtnActionPerformed"/>
                           </Events>
                         </Component>
                         <Component class="javax.swing.JSeparator" name="jSeparator14">
@@ -1659,13 +1661,16 @@
                                   <StringArray count="0"/>
                                 </Property>
                               </Properties>
+                              <Events>
+                                <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="relListValueChanged"/>
+                              </Events>
                               <AuxValues>
                                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                               </AuxValues>
                             </Component>
                           </SubComponents>
                         </Container>
-                        <Component class="javax.swing.JComboBox" name="jComboBox2">
+                        <Component class="javax.swing.JComboBox" name="relSelectCharacterComboBox">
                           <Properties>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Segoe UI" size="18" style="0"/>
@@ -1677,11 +1682,14 @@
                               <Border info="null"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="popupMenuWillBecomeVisible" listener="javax.swing.event.PopupMenuListener" parameters="javax.swing.event.PopupMenuEvent" handler="relSelectCharacterComboBoxPopupMenuWillBecomeVisible"/>
+                          </Events>
                           <AuxValues>
                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                           </AuxValues>
                         </Component>
-                        <Component class="javax.swing.JButton" name="jButton6">
+                        <Component class="javax.swing.JButton" name="relSelectCharacterBtn">
                           <Properties>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Segoe UI" size="18" style="0"/>
@@ -1693,6 +1701,9 @@
                               </Border>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="relSelectCharacterBtnActionPerformed"/>
+                          </Events>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel34">
                           <Properties>
@@ -1722,7 +1733,7 @@
                         </Component>
                       </SubComponents>
                     </Container>
-                    <Container class="javax.swing.JPanel" name="jPanel3">
+                    <Container class="javax.swing.JPanel" name="relDetailsPanel">
                       <Properties>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -1730,6 +1741,9 @@
                           </Border>
                         </Property>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="relDetailsPanel.setVisible(false);"/>
+                      </AuxValues>
 
                       <Layout>
                         <DimensionLayout dim="0">
@@ -1745,28 +1759,28 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                                          <Component id="jComboBox3" max="32767" attributes="0"/>
+                                          <Component id="relChar1ComboBox" max="32767" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jLabel26" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                                          <Component id="jComboBox4" pref="1167" max="32767" attributes="0"/>
+                                          <Component id="relChar2ComboBox" pref="1167" max="32767" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jLabel27" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                                          <Component id="jTextField1" max="32767" attributes="0"/>
+                                          <Component id="dynamic1TextBox" max="32767" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jLabel28" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                                          <Component id="jTextField2" max="32767" attributes="0"/>
+                                          <Component id="dynamic2TextBox" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                               </Group>
                               <Component id="jSeparator13" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jButton5" alignment="0" max="32767" attributes="0"/>
+                              <Component id="createRelBtn" alignment="0" max="32767" attributes="0"/>
                           </Group>
                         </DimensionLayout>
                         <DimensionLayout dim="1">
@@ -1778,12 +1792,12 @@
                                   <Component id="jSeparator16" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jComboBox3" max="32767" attributes="0"/>
+                                      <Component id="relChar1ComboBox" max="32767" attributes="0"/>
                                       <Component id="jLabel18" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="jComboBox4" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="relChar2ComboBox" alignment="0" max="32767" attributes="0"/>
                                       <Component id="jLabel26" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -1791,12 +1805,12 @@
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="jLabel27" max="32767" attributes="0"/>
-                                      <Component id="jTextField1" max="32767" attributes="0"/>
+                                      <Component id="dynamic1TextBox" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="jLabel28" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="jTextField2" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="dynamic2TextBox" alignment="0" max="32767" attributes="0"/>
                                   </Group>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                                   <Component id="jLabel25" min="-2" max="-2" attributes="0"/>
@@ -1805,7 +1819,7 @@
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="jSeparator13" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                                  <Component id="jButton5" min="-2" max="-2" attributes="0"/>
+                                  <Component id="createRelBtn" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -1844,7 +1858,7 @@
                             </Property>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JComboBox" name="jComboBox3">
+                        <Component class="javax.swing.JComboBox" name="relChar1ComboBox">
                           <Properties>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Segoe UI" size="18" style="0"/>
@@ -1858,6 +1872,9 @@
                               </Border>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="popupMenuWillBecomeVisible" listener="javax.swing.event.PopupMenuListener" parameters="javax.swing.event.PopupMenuEvent" handler="relChar1ComboBoxPopupMenuWillBecomeVisible"/>
+                          </Events>
                           <AuxValues>
                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                           </AuxValues>
@@ -1875,7 +1892,7 @@
                             </Property>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JComboBox" name="jComboBox4">
+                        <Component class="javax.swing.JComboBox" name="relChar2ComboBox">
                           <Properties>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Segoe UI" size="18" style="0"/>
@@ -1889,6 +1906,9 @@
                               </Border>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="popupMenuWillBecomeVisible" listener="javax.swing.event.PopupMenuListener" parameters="javax.swing.event.PopupMenuEvent" handler="relChar2ComboBoxPopupMenuWillBecomeVisible"/>
+                          </Events>
                           <AuxValues>
                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                           </AuxValues>
@@ -1913,7 +1933,7 @@
                             </Property>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JTextField" name="jTextField1">
+                        <Component class="javax.swing.JTextField" name="dynamic1TextBox">
                           <Properties>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Segoe UI" size="18" style="0"/>
@@ -1938,7 +1958,7 @@
                             </Property>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JTextField" name="jTextField2">
+                        <Component class="javax.swing.JTextField" name="dynamic2TextBox">
                           <Properties>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Segoe UI" size="18" style="0"/>
@@ -1981,7 +2001,7 @@
 
                           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                           <SubComponents>
-                            <Component class="javax.swing.JTextArea" name="jTextArea1">
+                            <Component class="javax.swing.JTextArea" name="relDescriptionTextArea">
                               <Properties>
                                 <Property name="columns" type="int" value="20"/>
                                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -2003,7 +2023,7 @@
                             </Property>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JButton" name="jButton5">
+                        <Component class="javax.swing.JButton" name="createRelBtn">
                           <Properties>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="Segoe UI" size="24" style="0"/>
@@ -2013,6 +2033,9 @@
                               <Border info="null"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createRelBtnActionPerformed"/>
+                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>
