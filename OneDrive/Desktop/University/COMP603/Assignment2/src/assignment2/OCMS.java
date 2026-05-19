@@ -21,9 +21,10 @@ public class OCMS extends javax.swing.JFrame {
     private Group selectedGroup;
     private Relationship selectedRel;
     private Character selectedRelChar;
-    private static CharacterHandler ch = new CharacterHandler();
-    private static GroupHandler gh = new GroupHandler();
-    private static RelationshipHandler rh = new RelationshipHandler();
+    private CharacterHandler ch = new CharacterHandler();
+    private GroupHandler gh = new GroupHandler();
+    private RelationshipHandler rh = new RelationshipHandler();
+    private TagHandler th = new TagHandler();
 
     /**
      * Creates new form OCMS
@@ -162,7 +163,23 @@ public class OCMS extends javax.swing.JFrame {
         nameInputText2 = new javax.swing.JTextField();
         jLabel22 = new javax.swing.JLabel();
         jSeparator11 = new javax.swing.JSeparator();
-        jButton4 = new javax.swing.JButton();
+        createTagBtn = new javax.swing.JButton();
+        tagManagementPanel = new javax.swing.JPanel();
+        jLabel38 = new javax.swing.JLabel();
+        jSeparator24 = new javax.swing.JSeparator();
+        jSeparator25 = new javax.swing.JSeparator();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        tagCharacterComboBox = new javax.swing.JComboBox<>();
+        jLabel40 = new javax.swing.JLabel();
+        tagSelect1ComboBox = new javax.swing.JComboBox<>();
+        addTagToCharBtn = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel39 = new javax.swing.JLabel();
+        tagGroupComboBox = new javax.swing.JComboBox<>();
+        tagSelect2ComboBox = new javax.swing.JComboBox<>();
+        jLabel41 = new javax.swing.JLabel();
+        addTagToGroupBtn = new javax.swing.JButton();
         sPanel = new javax.swing.JPanel();
         tagListPanel1 = new javax.swing.JPanel();
         jLabel29 = new javax.swing.JLabel();
@@ -540,8 +557,8 @@ public class OCMS extends javax.swing.JFrame {
                 .addGap(50, 50, 50)
                 .addGroup(charDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 954, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 954, Short.MAX_VALUE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane5)
                     .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -575,7 +592,7 @@ public class OCMS extends javax.swing.JFrame {
                         .addGap(0, 0, 0)
                         .addComponent(jLabel12)
                         .addGap(0, 0, 0)
-                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -761,7 +778,7 @@ public class OCMS extends javax.swing.JFrame {
                     .addComponent(groupAddCharComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(addCharToGroupBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 885, Short.MAX_VALUE))
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 954, Short.MAX_VALUE))
                 .addContainerGap())
         );
         groupDetailsPanelLayout.setVerticalGroup(
@@ -786,7 +803,7 @@ public class OCMS extends javax.swing.JFrame {
                     .addGroup(groupDetailsPanelLayout.createSequentialGroup()
                         .addComponent(jLabel21)
                         .addGap(0, 0, 0)
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+                        .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
                         .addGap(0, 0, 0)
                         .addComponent(jLabel24)
                         .addGap(0, 0, 0)
@@ -1018,7 +1035,7 @@ public class OCMS extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, relDetailsPanelLayout.createSequentialGroup()
                         .addComponent(jLabel26)
                         .addGap(0, 0, 0)
-                        .addComponent(relChar2ComboBox, 0, 1167, Short.MAX_VALUE))
+                        .addComponent(relChar2ComboBox, 0, 1236, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, relDetailsPanelLayout.createSequentialGroup()
                         .addComponent(jLabel27)
                         .addGap(0, 0, 0)
@@ -1059,7 +1076,7 @@ public class OCMS extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(jLabel25)
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
+                .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -1108,6 +1125,7 @@ public class OCMS extends javax.swing.JFrame {
         jScrollPane9.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         tagList.setBorder(null);
+        tagList.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jScrollPane9.setViewportView(tagList);
 
         javax.swing.GroupLayout tagListPanelLayout = new javax.swing.GroupLayout(tagListPanel);
@@ -1125,7 +1143,7 @@ public class OCMS extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane9)
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 915, Short.MAX_VALUE)
                 .addGap(0, 0, 0))
         );
 
@@ -1147,26 +1165,26 @@ public class OCMS extends javax.swing.JFrame {
 
         jSeparator11.setForeground(java.awt.Color.black);
 
-        jButton4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jButton4.setText("Create Tag");
-        jButton4.setBorder(null);
-        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jButton4.addActionListener(this::jButton4ActionPerformed);
+        createTagBtn.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        createTagBtn.setText("Create Tag");
+        createTagBtn.setBorder(null);
+        createTagBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        createTagBtn.addActionListener(this::createTagBtnActionPerformed);
 
         javax.swing.GroupLayout tagAddPanelLayout = new javax.swing.GroupLayout(tagAddPanel);
         tagAddPanel.setLayout(tagAddPanelLayout);
         tagAddPanelLayout.setHorizontalGroup(
             tagAddPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 1283, Short.MAX_VALUE)
+            .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSeparator10)
             .addGroup(tagAddPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(nameInputText2, javax.swing.GroupLayout.DEFAULT_SIZE, 1103, Short.MAX_VALUE)
+                .addComponent(nameInputText2, javax.swing.GroupLayout.DEFAULT_SIZE, 1172, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(jSeparator11, javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(createTagBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         tagAddPanelLayout.setVerticalGroup(
             tagAddPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1181,8 +1199,185 @@ public class OCMS extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jButton4)
+                .addComponent(createTagBtn)
                 .addGap(0, 0, 0))
+        );
+
+        tagManagementPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        tagManagementPanel.setFocusable(false);
+
+        jLabel38.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel38.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel38.setText("Add Tag to Character/Group");
+        jLabel38.setPreferredSize(new java.awt.Dimension(156, 50));
+
+        jSeparator24.setForeground(java.awt.Color.black);
+
+        jSeparator25.setForeground(java.awt.Color.black);
+        jSeparator25.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Character");
+        jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        tagCharacterComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tagCharacterComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tagCharacterComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                tagCharacterComboBoxPopupMenuWillBecomeVisible(evt);
+            }
+        });
+
+        jLabel40.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel40.setText("Tag: ");
+        jLabel40.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        tagSelect1ComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tagSelect1ComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tagSelect1ComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                tagSelect1ComboBoxPopupMenuWillBecomeVisible(evt);
+            }
+        });
+
+        addTagToCharBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        addTagToCharBtn.setText("Add Tag to Character");
+        addTagToCharBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        addTagToCharBtn.addActionListener(this::addTagToCharBtnActionPerformed);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(tagCharacterComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel40, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(tagSelect1ComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(addTagToCharBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(jLabel2)
+                .addGap(0, 0, 0)
+                .addComponent(tagCharacterComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(tagSelect1ComboBox)
+                    .addComponent(jLabel40, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(addTagToCharBtn))
+        );
+
+        jLabel39.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel39.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel39.setText("Group");
+        jLabel39.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        tagGroupComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tagGroupComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tagGroupComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                tagGroupComboBoxPopupMenuWillBecomeVisible(evt);
+            }
+        });
+
+        tagSelect2ComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        tagSelect2ComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        tagSelect2ComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                tagSelect2ComboBoxPopupMenuWillBecomeVisible(evt);
+            }
+        });
+
+        jLabel41.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel41.setText("Tag: ");
+        jLabel41.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        addTagToGroupBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        addTagToGroupBtn.setText("Add Tag to Group");
+        addTagToGroupBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        addTagToGroupBtn.addActionListener(this::addTagToGroupBtnActionPerformed);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel39, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(tagGroupComboBox, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jLabel41, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(tagSelect2ComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(addTagToGroupBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jLabel39)
+                .addGap(0, 0, 0)
+                .addComponent(tagGroupComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(tagSelect2ComboBox)
+                    .addComponent(jLabel41, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(addTagToGroupBtn)
+                .addGap(0, 0, 0))
+        );
+
+        javax.swing.GroupLayout tagManagementPanelLayout = new javax.swing.GroupLayout(tagManagementPanel);
+        tagManagementPanel.setLayout(tagManagementPanelLayout);
+        tagManagementPanelLayout.setHorizontalGroup(
+            tagManagementPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel38, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jSeparator24)
+            .addGroup(tagManagementPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        tagManagementPanelLayout.setVerticalGroup(
+            tagManagementPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tagManagementPanelLayout.createSequentialGroup()
+                .addComponent(jLabel38, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jSeparator24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(tagManagementPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator25)
+                    .addGroup(tagManagementPanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(tagManagementPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())))
         );
 
         javax.swing.GroupLayout tPanelLayout = new javax.swing.GroupLayout(tPanel);
@@ -1193,7 +1388,9 @@ public class OCMS extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(tagListPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(tagAddPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(tPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tagAddPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tagManagementPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         tPanelLayout.setVerticalGroup(
@@ -1204,7 +1401,9 @@ public class OCMS extends javax.swing.JFrame {
                     .addComponent(tagListPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(tPanelLayout.createSequentialGroup()
                         .addComponent(tagAddPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 684, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(tagManagementPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -1333,7 +1532,7 @@ public class OCMS extends javax.swing.JFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 1283, Short.MAX_VALUE)
+            .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 1352, Short.MAX_VALUE)
             .addComponent(jSeparator22, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
@@ -1370,7 +1569,7 @@ public class OCMS extends javax.swing.JFrame {
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane14, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
+                .addComponent(jScrollPane14, javax.swing.GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(jLabel36)
                 .addGap(0, 0, 0)
@@ -1447,6 +1646,7 @@ public class OCMS extends javax.swing.JFrame {
     private void tagMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tagMenuBtnActionPerformed
         CardLayout cl = (CardLayout) mainPanel.getLayout();
         cl.show(mainPanel, "tag");
+        refreshTagList();
     }//GEN-LAST:event_tagMenuBtnActionPerformed
 
     private void searchMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchMenuBtnActionPerformed
@@ -1521,9 +1721,13 @@ public class OCMS extends javax.swing.JFrame {
         groupAddCharComboBox.setSelectedIndex(-1);
     }//GEN-LAST:event_addCharToGroupBtnActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void createTagBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTagBtnActionPerformed
+        if(nameInputText2.getText() != ""){
+            th.createTag(nameInputText2.getText());
+        }
+        clearTagInputs();
+        refreshTagList();
+    }//GEN-LAST:event_createTagBtnActionPerformed
 
     private void addRelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRelBtnActionPerformed
         relDetailsPanel.setVisible(true);
@@ -1586,6 +1790,8 @@ public class OCMS extends javax.swing.JFrame {
             occupationInputText.setText(c.getOccupation());
             descriptionInputTextArea.setText(c.getDescription());
             charGroupList.setListData(ch.getGroups(c));
+            charRelationshipList.setListData(rh.getCharRelationships(c));
+            refreshTagCharacterList();
         }
     }//GEN-LAST:event_characterListValueChanged
 
@@ -1600,6 +1806,7 @@ public class OCMS extends javax.swing.JFrame {
             nameInputText1.setText(g.getName());
             descriptionInputTextArea1.setText(g.getDescription());
             refreshGroupCharList();
+            refreshGroupTagList();
         }
     }//GEN-LAST:event_groupListValueChanged
 
@@ -1618,7 +1825,7 @@ public class OCMS extends javax.swing.JFrame {
     private void relChar2ComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_relChar2ComboBoxPopupMenuWillBecomeVisible
         refreshCharacterComboBox(relChar2ComboBox);
     }//GEN-LAST:event_relChar2ComboBoxPopupMenuWillBecomeVisible
-
+              
     private void relSelectCharacterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relSelectCharacterBtnActionPerformed
         if(relSelectCharacterComboBox.getSelectedIndex() != -1){
             selectedRelChar = ch.getCharacter(relSelectCharacterComboBox.getSelectedItem().toString());
@@ -1670,6 +1877,46 @@ public class OCMS extends javax.swing.JFrame {
         dynamic2TextBox.setText(selectedRel.getDynamic2());
         relDescriptionTextArea.setText(selectedRel.getDescription());
     }//GEN-LAST:event_relListValueChanged
+
+    private void tagCharacterComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_tagCharacterComboBoxPopupMenuWillBecomeVisible
+        refreshCharacterComboBox(tagCharacterComboBox);
+    }//GEN-LAST:event_tagCharacterComboBoxPopupMenuWillBecomeVisible
+
+    private void tagGroupComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_tagGroupComboBoxPopupMenuWillBecomeVisible
+        tagGroupComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(gh.getAllGroups()));
+    }//GEN-LAST:event_tagGroupComboBoxPopupMenuWillBecomeVisible
+
+    private void tagSelect1ComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_tagSelect1ComboBoxPopupMenuWillBecomeVisible
+        refreshTagComboBox(tagSelect1ComboBox);
+    }//GEN-LAST:event_tagSelect1ComboBoxPopupMenuWillBecomeVisible
+
+    private void tagSelect2ComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_tagSelect2ComboBoxPopupMenuWillBecomeVisible
+        refreshTagComboBox(tagSelect2ComboBox);
+    }//GEN-LAST:event_tagSelect2ComboBoxPopupMenuWillBecomeVisible
+
+    private void addTagToCharBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTagToCharBtnActionPerformed
+        if(tagSelect1ComboBox.getSelectedItem() != null && tagCharacterComboBox.getSelectedItem() != null){
+            String tag = tagSelect1ComboBox.getSelectedItem().toString();
+            String c = tagCharacterComboBox.getSelectedItem().toString();
+            th.addCharTag(ch.getCharacter(c), th.getTag(tag));
+        } else{
+            JOptionPane.showMessageDialog(null, "Select tag and character");
+        }
+        clearTagInputs();
+        refreshTagCharacterList();
+    }//GEN-LAST:event_addTagToCharBtnActionPerformed
+
+    private void addTagToGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTagToGroupBtnActionPerformed
+        if(tagSelect2ComboBox.getSelectedItem() != null && tagGroupComboBox.getSelectedItem() != null){
+            String tag = tagSelect2ComboBox.getSelectedItem().toString();
+            String g = tagGroupComboBox.getSelectedItem().toString();
+            th.addGroupTag(gh.getGroup(g), th.getTag(tag));
+        } else{
+            JOptionPane.showMessageDialog(null, "Select tag and group");
+        }
+        clearTagInputs();
+        refreshGroupTagList();
+    }//GEN-LAST:event_addTagToGroupBtnActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -1727,17 +1974,24 @@ public class OCMS extends javax.swing.JFrame {
         occupationInputText.setText("");
         descriptionInputTextArea.setText("");
         charGroupList.setListData(new String[0]);
+        charRelationshipList.setListData(new String[0]);
         refreshCharacterList();
     }
     
     public void refreshCharacterList(){
         characterList.setListData(ch.getAllCharacters());
     }
+    public void refreshTagCharacterList(){
+        if(selectedChar != null){
+            charTagList.setListData(ch.getTags(selectedChar));
+        }
+    }
     
     public void clearGroupInputs(){
         nameInputText1.setText("");
         descriptionInputTextArea1.setText("");
         groupCharList.setListData(new String[0]);
+        groupTagList.setListData(new String[0]);
         refreshGroupList();
     }
     
@@ -1757,6 +2011,11 @@ public class OCMS extends javax.swing.JFrame {
             groupCharList.setListData(gh.getAllCharInGroup(selectedGroup));
         }
     }
+    public void refreshGroupTagList(){
+        if(selectedGroup != null){
+            groupTagList.setListData(gh.getTags(selectedGroup));
+        }
+    }
     
     public void refreshRelList(){
         if(selectedRelChar != null){
@@ -1764,8 +2023,24 @@ public class OCMS extends javax.swing.JFrame {
         }
     }
     
+    public void refreshTagList(){
+        tagList.setListData(th.getTags());
+    }
+    
     public void refreshCharacterComboBox(javax.swing.JComboBox<String> combo){
         combo.setModel(new javax.swing.DefaultComboBoxModel<>(ch.getAllCharacters()));
+    }
+    
+    public void refreshTagComboBox(javax.swing.JComboBox<String> combo){
+        combo.setModel(new javax.swing.DefaultComboBoxModel<>(th.getTags()));
+    }
+    
+    public void clearTagInputs(){
+        nameInputText2.setText("");
+        tagGroupComboBox.setSelectedIndex(-1);
+        tagCharacterComboBox.setSelectedIndex(-1);
+        tagSelect1ComboBox.setSelectedIndex(-1);
+        tagSelect2ComboBox.setSelectedIndex(-1);
     }
     
     
@@ -1774,6 +2049,8 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JButton addCharToGroupBtn;
     private javax.swing.JButton addGroupBtn;
     private javax.swing.JButton addRelBtn;
+    private javax.swing.JButton addTagToCharBtn;
+    private javax.swing.JButton addTagToGroupBtn;
     private javax.swing.JTextField ageInputText;
     private javax.swing.JPanel cPanel;
     private javax.swing.JPanel charDetailsPanel;
@@ -1786,6 +2063,7 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JButton createCharacterBtn;
     private javax.swing.JButton createGroupBtn;
     private javax.swing.JButton createRelBtn;
+    private javax.swing.JButton createTagBtn;
     private javax.swing.JTextArea descriptionInputTextArea;
     private javax.swing.JTextArea descriptionInputTextArea1;
     private javax.swing.JTextField dobInputText;
@@ -1801,7 +2079,6 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JButton groupMenuBtn;
     private javax.swing.JList<String> groupTagList;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox5;
@@ -1816,6 +2093,7 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
@@ -1835,7 +2113,11 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1845,7 +2127,9 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JList<String> jList2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
@@ -1876,6 +2160,8 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator21;
     private javax.swing.JSeparator jSeparator22;
     private javax.swing.JSeparator jSeparator23;
+    private javax.swing.JSeparator jSeparator24;
+    private javax.swing.JSeparator jSeparator25;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
@@ -1908,10 +2194,15 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JTextField speciesInputText;
     private javax.swing.JPanel tPanel;
     private javax.swing.JPanel tagAddPanel;
+    private javax.swing.JComboBox<String> tagCharacterComboBox;
+    private javax.swing.JComboBox<String> tagGroupComboBox;
     private javax.swing.JList<String> tagList;
     private javax.swing.JPanel tagListPanel;
     private javax.swing.JPanel tagListPanel1;
+    private javax.swing.JPanel tagManagementPanel;
     private javax.swing.JButton tagMenuBtn;
+    private javax.swing.JComboBox<String> tagSelect1ComboBox;
+    private javax.swing.JComboBox<String> tagSelect2ComboBox;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JPanel titlePanel;
     private javax.swing.JSplitPane titleSplit;

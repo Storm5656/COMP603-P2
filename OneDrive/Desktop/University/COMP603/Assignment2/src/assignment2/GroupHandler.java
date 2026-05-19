@@ -108,5 +108,24 @@ public class GroupHandler {
             ex.printStackTrace();
         }
     }
+
+    public String[] getTags(Group g) {
+        List<String> tags = new ArrayList<String>();
+        Connection conn = DatabaseManager.getConnection();
+        String sql = "SELECT t.NAME FROM TAGS t "
+                + "JOIN GROUP_TAGS gt ON t.TAG_ID = gt.TAG_ID "
+                + "WHERE gt.GROUP_ID = ?";
+        
+        try(PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, g.getId());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                tags.add(rs.getString("NAME"));
+            }
+        } catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return tags.toArray(new String[0]);
+    }
     
 }

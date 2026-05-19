@@ -192,4 +192,25 @@ public class CharacterHandler {
         
         return groups.toArray(new String[0]);
     }
+
+    public String[] getTags(Character c) {
+        List<String> tags = new ArrayList<String>();
+        Connection conn = DatabaseManager.getConnection();
+        String sql = "SELECT t.NAME FROM TAGS t "
+                + "JOIN CHARACTER_TAGS ct ON t.TAG_ID = ct.TAG_ID "
+                + "WHERE ct.CHARACTER_ID = ?";
+        
+        try(PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, c.getId());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                tags.add(rs.getString("NAME"));
+            }
+        } catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        
+        
+        return tags.toArray(new String[0]);
+    }
 }

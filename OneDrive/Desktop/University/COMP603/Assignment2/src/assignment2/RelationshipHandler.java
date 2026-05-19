@@ -112,7 +112,6 @@ public class RelationshipHandler {
     }
     
     //get characters relationships
-
     public String[] getCharRelationships(Character c) {
         List<String> relationships = new ArrayList<String>();
         Connection conn = DatabaseManager.getConnection();
