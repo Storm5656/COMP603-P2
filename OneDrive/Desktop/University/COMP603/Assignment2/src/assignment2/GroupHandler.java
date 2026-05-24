@@ -127,5 +127,58 @@ public class GroupHandler {
         }
         return tags.toArray(new String[0]);
     }
+
+    public void deleteGroup(Group g) {
+        if (g == null){
+            return;
+        }
+        Connection conn = DatabaseManager.getConnection();
+        try {
+            // Start transaction
+            conn.setAutoCommit(false);
+
+            // Delete character-group links
+            String sql1 = "DELETE FROM CHARACTER_GROUPS "
+                        + "WHERE GROUP_ID = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql1)) {
+                ps.setInt(1, g.getId());
+                ps.executeUpdate();
+            }
+
+            // Delete group tags
+            String sql2 = "DELETE FROM GROUP_TAGS "
+                        + "WHERE GROUP_ID = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql2)) {
+                ps.setInt(1, g.getId());
+                ps.executeUpdate();
+            }
+
+            // Delete the group itself
+            String sql3 = "DELETE FROM USER_GROUPS "
+                        + "WHERE GROUP_ID = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql3)) {
+                ps.setInt(1, g.getId());
+                ps.executeUpdate();
+            }
+
+            // Save all changes
+            conn.commit();
+
+        } catch (SQLException e) {
+
+            try {
+                // Undo all changes if something failed
+                conn.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+            e.printStackTrace();
+
+        }
+    }
     
 }

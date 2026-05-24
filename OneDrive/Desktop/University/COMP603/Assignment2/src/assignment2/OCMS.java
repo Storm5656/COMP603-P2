@@ -7,8 +7,12 @@ package assignment2;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
+import javax.swing.ListModel;
 
 /**
  *
@@ -25,6 +29,7 @@ public class OCMS extends javax.swing.JFrame {
     private GroupHandler gh = new GroupHandler();
     private RelationshipHandler rh = new RelationshipHandler();
     private TagHandler th = new TagHandler();
+    private SearchHandler sh = new SearchHandler();
 
     /**
      * Creates new form OCMS
@@ -94,6 +99,7 @@ public class OCMS extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         createCharacterBtn = new javax.swing.JButton();
         jLabel31 = new javax.swing.JLabel();
+        deleteCharButton = new javax.swing.JButton();
         gPanel = new javax.swing.JPanel();
         groupListPanel = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
@@ -121,6 +127,7 @@ public class OCMS extends javax.swing.JFrame {
         groupAddCharComboBox = new javax.swing.JComboBox<>();
         addCharToGroupBtn = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
+        deleteGroupBtn = new javax.swing.JButton();
         rPanel = new javax.swing.JPanel();
         relListPanel = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
@@ -151,6 +158,7 @@ public class OCMS extends javax.swing.JFrame {
         relDescriptionTextArea = new javax.swing.JTextArea();
         jSeparator13 = new javax.swing.JSeparator();
         createRelBtn = new javax.swing.JButton();
+        deleteRelBtn = new javax.swing.JButton();
         tPanel = new javax.swing.JPanel();
         tagListPanel = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
@@ -187,24 +195,24 @@ public class OCMS extends javax.swing.JFrame {
         jLabel30 = new javax.swing.JLabel();
         nameInputText3 = new javax.swing.JTextField();
         jSeparator20 = new javax.swing.JSeparator();
-        jButton7 = new javax.swing.JButton();
+        searchClearBtn = new javax.swing.JButton();
         jSeparator21 = new javax.swing.JSeparator();
         jScrollPane13 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        searchList = new javax.swing.JList<>();
         jPanel4 = new javax.swing.JPanel();
         jLabel32 = new javax.swing.JLabel();
         jSeparator22 = new javax.swing.JSeparator();
         jLabel33 = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jComboBox5 = new javax.swing.JComboBox<>();
+        searchAddTagBtn = new javax.swing.JButton();
+        searchTagComboBox = new javax.swing.JComboBox<>();
         jScrollPane14 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        searchTagList = new javax.swing.JList<>();
         jLabel36 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
-        occupationInputText1 = new javax.swing.JTextField();
         jSeparator23 = new javax.swing.JSeparator();
-        jButton9 = new javax.swing.JButton();
+        searchUpdateBtn = new javax.swing.JButton();
+        searchGroupComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -539,38 +547,52 @@ public class OCMS extends javax.swing.JFrame {
         jLabel31.setText("Character Details");
         jLabel31.setPreferredSize(new java.awt.Dimension(156, 50));
 
+        deleteCharButton.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        deleteCharButton.setText("Delete");
+        deleteCharButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        deleteCharButton.addActionListener(this::deleteCharButtonActionPerformed);
+
         javax.swing.GroupLayout charDetailsPanelLayout = new javax.swing.GroupLayout(charDetailsPanel);
         charDetailsPanel.setLayout(charDetailsPanelLayout);
         charDetailsPanelLayout.setHorizontalGroup(
             charDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jSeparator4)
-            .addGroup(charDetailsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(charDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane2)
-                    .addGroup(charDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(50, 50, 50)
-                .addGroup(charDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 954, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 954, Short.MAX_VALUE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane5)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-            .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(createCharacterBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(charDetailsPanelLayout.createSequentialGroup()
+                .addGroup(charDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(charDetailsPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(charDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2)
+                            .addGroup(charDetailsPanelLayout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, 0)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(50, 50, 50)
+                        .addGroup(charDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 954, Short.MAX_VALUE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 954, Short.MAX_VALUE)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane5)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(charDetailsPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteCharButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         charDetailsPanelLayout.setVerticalGroup(
             charDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(charDetailsPanelLayout.createSequentialGroup()
-                .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addGroup(charDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(charDetailsPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(deleteCharButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(8, 8, 8)))
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(charDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -754,37 +776,52 @@ public class OCMS extends javax.swing.JFrame {
         jLabel15.setText("Characters");
         jLabel15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        deleteGroupBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        deleteGroupBtn.setText("Delete");
+        deleteGroupBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        deleteGroupBtn.addActionListener(this::deleteGroupBtnActionPerformed);
+
         javax.swing.GroupLayout groupDetailsPanelLayout = new javax.swing.GroupLayout(groupDetailsPanel);
         groupDetailsPanel.setLayout(groupDetailsPanelLayout);
         groupDetailsPanelLayout.setHorizontalGroup(
             groupDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSeparator7, javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(createGroupBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSeparator8)
             .addGroup(groupDetailsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(groupDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane10)
-                    .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, groupDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(nameInputText1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(50, 50, 50)
                 .addGroup(groupDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(groupAddCharComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addCharToGroupBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 954, Short.MAX_VALUE))
+                    .addGroup(groupDetailsPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(groupDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jScrollPane10)
+                            .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, groupDetailsPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE)
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(nameInputText1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(50, 50, 50)
+                        .addGroup(groupDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(groupAddCharComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(addCharToGroupBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 954, Short.MAX_VALUE)))
+                    .addGroup(groupDetailsPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteGroupBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         groupDetailsPanelLayout.setVerticalGroup(
             groupDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(groupDetailsPanelLayout.createSequentialGroup()
-                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(groupDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(groupDetailsPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(deleteGroupBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(9, 9, 9)))
                 .addGap(0, 0, 0)
                 .addComponent(jSeparator7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1016,43 +1053,57 @@ public class OCMS extends javax.swing.JFrame {
         createRelBtn.setBorder(null);
         createRelBtn.addActionListener(this::createRelBtnActionPerformed);
 
+        deleteRelBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        deleteRelBtn.setText("Delete");
+        deleteRelBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        deleteRelBtn.addActionListener(this::deleteRelBtnActionPerformed);
+
         javax.swing.GroupLayout relDetailsPanelLayout = new javax.swing.GroupLayout(relDetailsPanel);
         relDetailsPanel.setLayout(relDetailsPanelLayout);
         relDetailsPanelLayout.setHorizontalGroup(
             relDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSeparator16)
             .addComponent(jSeparator12)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, relDetailsPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(relDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane12)
-                    .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, relDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel18)
-                        .addGap(0, 0, 0)
-                        .addComponent(relChar1ComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, relDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel26)
-                        .addGap(0, 0, 0)
-                        .addComponent(relChar2ComboBox, 0, 1236, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, relDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel27)
-                        .addGap(0, 0, 0)
-                        .addComponent(dynamic1TextBox))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, relDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel28)
-                        .addGap(0, 0, 0)
-                        .addComponent(dynamic2TextBox)))
-                .addContainerGap())
             .addComponent(jSeparator13)
             .addComponent(createRelBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(relDetailsPanelLayout.createSequentialGroup()
+                .addGroup(relDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, relDetailsPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(relDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane12)
+                            .addComponent(jLabel25, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, relDetailsPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel18)
+                                .addGap(0, 0, 0)
+                                .addComponent(relChar1ComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, relDetailsPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel26)
+                                .addGap(0, 0, 0)
+                                .addComponent(relChar2ComboBox, 0, 1236, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, relDetailsPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel27)
+                                .addGap(0, 0, 0)
+                                .addComponent(dynamic1TextBox))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, relDetailsPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel28)
+                                .addGap(0, 0, 0)
+                                .addComponent(dynamic2TextBox))))
+                    .addGroup(relDetailsPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteRelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         relDetailsPanelLayout.setVerticalGroup(
             relDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(relDetailsPanelLayout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(relDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(relDetailsPanelLayout.createSequentialGroup()
+                        .addComponent(deleteRelBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9)))
                 .addGap(0, 0, 0)
                 .addComponent(jSeparator16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -1329,10 +1380,7 @@ public class OCMS extends javax.swing.JFrame {
                 .addComponent(jLabel41, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(tagSelect2ComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(addTagToGroupBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(addTagToGroupBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1429,17 +1477,18 @@ public class OCMS extends javax.swing.JFrame {
 
         jSeparator20.setForeground(java.awt.Color.black);
 
-        jButton7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jButton7.setText("Update Search");
-        jButton7.setBorder(null);
+        searchClearBtn.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        searchClearBtn.setText("Clear Search");
+        searchClearBtn.setBorder(null);
+        searchClearBtn.addActionListener(this::searchClearBtnActionPerformed);
 
         jSeparator21.setForeground(java.awt.Color.black);
 
         jScrollPane13.setBorder(null);
 
-        jList1.setBorder(null);
-        jList1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jScrollPane13.setViewportView(jList1);
+        searchList.setBorder(null);
+        searchList.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jScrollPane13.setViewportView(searchList);
 
         javax.swing.GroupLayout tagListPanel1Layout = new javax.swing.GroupLayout(tagListPanel1);
         tagListPanel1.setLayout(tagListPanel1Layout);
@@ -1448,7 +1497,7 @@ public class OCMS extends javax.swing.JFrame {
             .addComponent(jSeparator17, javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSeparator20)
-            .addComponent(jButton7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(searchClearBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSeparator21)
             .addGroup(tagListPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -1471,7 +1520,7 @@ public class OCMS extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jButton7)
+                .addComponent(searchClearBtn)
                 .addGap(0, 0, 0)
                 .addComponent(jSeparator21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -1497,18 +1546,28 @@ public class OCMS extends javax.swing.JFrame {
         jLabel35.setText("Tag: ");
         jLabel35.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setText("Add Tag");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        searchAddTagBtn.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        searchAddTagBtn.setText("Add Tag");
+        searchAddTagBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        searchAddTagBtn.addActionListener(this::searchAddTagBtnActionPerformed);
 
-        jComboBox5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jComboBox5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        searchTagComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        searchTagComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        searchTagComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                searchTagComboBoxPopupMenuWillBecomeVisible(evt);
+            }
+        });
 
         jScrollPane14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jList2.setBorder(null);
-        jList2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jScrollPane14.setViewportView(jList2);
+        searchTagList.setBorder(null);
+        searchTagList.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jScrollPane14.setViewportView(searchTagList);
 
         jLabel36.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel36.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -1519,14 +1578,24 @@ public class OCMS extends javax.swing.JFrame {
         jLabel37.setText("Group: ");
         jLabel37.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        occupationInputText1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        occupationInputText1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
         jSeparator23.setForeground(java.awt.Color.black);
 
-        jButton9.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jButton9.setText("Update Search");
-        jButton9.setBorder(null);
+        searchUpdateBtn.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        searchUpdateBtn.setText("Update Search");
+        searchUpdateBtn.setBorder(null);
+        searchUpdateBtn.addActionListener(this::searchUpdateBtnActionPerformed);
+
+        searchGroupComboBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        searchGroupComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        searchGroupComboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+                searchGroupComboBoxPopupMenuWillBecomeVisible(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -1543,16 +1612,16 @@ public class OCMS extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel35)
                         .addGap(0, 0, 0)
-                        .addComponent(jComboBox5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(searchTagComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(0, 0, 0)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(searchAddTagBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel37)
                         .addGap(0, 0, 0)
-                        .addComponent(occupationInputText1)))
+                        .addComponent(searchGroupComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
             .addComponent(jSeparator23)
-            .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(searchUpdateBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1566,20 +1635,20 @@ public class OCMS extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel35)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(searchAddTagBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(searchTagComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane14, javax.swing.GroupLayout.DEFAULT_SIZE, 748, Short.MAX_VALUE)
+                .addComponent(jScrollPane14, javax.swing.GroupLayout.DEFAULT_SIZE, 744, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(jLabel36)
                 .addGap(0, 0, 0)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel37)
-                    .addComponent(occupationInputText1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(searchGroupComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel37, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jButton9)
+                .addComponent(searchUpdateBtn)
                 .addGap(0, 0, 0))
         );
 
@@ -1631,16 +1700,19 @@ public class OCMS extends javax.swing.JFrame {
     private void charMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_charMenuBtnActionPerformed
         CardLayout cl = (CardLayout) mainPanel.getLayout();
         cl.show(mainPanel, "character");
+        refreshCharacterList();
     }//GEN-LAST:event_charMenuBtnActionPerformed
 
     private void groupMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_groupMenuBtnActionPerformed
         CardLayout cl = (CardLayout) mainPanel.getLayout();
         cl.show(mainPanel, "group");
+        refreshGroupList();
     }//GEN-LAST:event_groupMenuBtnActionPerformed
 
     private void relMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relMenuBtnActionPerformed
         CardLayout cl = (CardLayout) mainPanel.getLayout();
         cl.show(mainPanel, "relationship");
+        refreshRelList();
     }//GEN-LAST:event_relMenuBtnActionPerformed
 
     private void tagMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tagMenuBtnActionPerformed
@@ -1652,6 +1724,7 @@ public class OCMS extends javax.swing.JFrame {
     private void searchMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchMenuBtnActionPerformed
         CardLayout cl = (CardLayout) mainPanel.getLayout();
         cl.show(mainPanel, "search");
+        clearSearchInputs();
     }//GEN-LAST:event_searchMenuBtnActionPerformed
 
     private void addCharBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCharBtnActionPerformed
@@ -1722,7 +1795,7 @@ public class OCMS extends javax.swing.JFrame {
     }//GEN-LAST:event_addCharToGroupBtnActionPerformed
 
     private void createTagBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTagBtnActionPerformed
-        if(nameInputText2.getText() != ""){
+        if(!"".equals(nameInputText2.getText())){
             th.createTag(nameInputText2.getText());
         }
         clearTagInputs();
@@ -1883,7 +1956,7 @@ public class OCMS extends javax.swing.JFrame {
     }//GEN-LAST:event_tagCharacterComboBoxPopupMenuWillBecomeVisible
 
     private void tagGroupComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_tagGroupComboBoxPopupMenuWillBecomeVisible
-        tagGroupComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(gh.getAllGroups()));
+        refreshGroupComboBox(tagGroupComboBox);
     }//GEN-LAST:event_tagGroupComboBoxPopupMenuWillBecomeVisible
 
     private void tagSelect1ComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_tagSelect1ComboBoxPopupMenuWillBecomeVisible
@@ -1917,6 +1990,71 @@ public class OCMS extends javax.swing.JFrame {
         clearTagInputs();
         refreshGroupTagList();
     }//GEN-LAST:event_addTagToGroupBtnActionPerformed
+
+    private void searchTagComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_searchTagComboBoxPopupMenuWillBecomeVisible
+        refreshTagComboBox(searchTagComboBox);
+    }//GEN-LAST:event_searchTagComboBoxPopupMenuWillBecomeVisible
+
+    private void searchClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchClearBtnActionPerformed
+        clearSearchInputs();
+    }//GEN-LAST:event_searchClearBtnActionPerformed
+
+    private void searchGroupComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_searchGroupComboBoxPopupMenuWillBecomeVisible
+        refreshGroupComboBox(searchGroupComboBox);
+    }//GEN-LAST:event_searchGroupComboBoxPopupMenuWillBecomeVisible
+
+    private void searchAddTagBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchAddTagBtnActionPerformed
+        String tag = searchTagComboBox.getSelectedItem().toString();
+        List<String> tags = getSearchTags();
+        if(!"".equals(tag)){
+            tags.add(tag);
+        }
+        searchTagList.setListData(tags.toArray(String[]::new));
+        searchTagComboBox.setSelectedIndex(-1);
+    }//GEN-LAST:event_searchAddTagBtnActionPerformed
+
+    private void searchUpdateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchUpdateBtnActionPerformed
+        refreshSearchList();
+    }//GEN-LAST:event_searchUpdateBtnActionPerformed
+
+    private void deleteCharButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteCharButtonActionPerformed
+        int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this character?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+
+        if (response == JOptionPane.YES_OPTION) {
+            // User clicked Yes
+            ch.deleteChar(selectedChar);
+            refreshCharacterList();
+            charDetailsPanel.setVisible(false);
+        } else {
+            System.out.println("Cancelled character deletion");
+        }
+    }//GEN-LAST:event_deleteCharButtonActionPerformed
+
+    private void deleteGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteGroupBtnActionPerformed
+        int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this group?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+
+        if (response == JOptionPane.YES_OPTION) {
+            // User clicked Yes
+            gh.deleteGroup(selectedGroup);
+            refreshGroupList();
+            groupDetailsPanel.setVisible(false);
+        } else {
+            System.out.println("Cancelled group deletion");
+        }
+    }//GEN-LAST:event_deleteGroupBtnActionPerformed
+
+    private void deleteRelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteRelBtnActionPerformed
+        int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this relationship?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+
+        if (response == JOptionPane.YES_OPTION) {
+            // User clicked Yes
+            rh.deleteRel(selectedRel);
+            refreshRelList();
+            relDetailsPanel.setVisible(false);
+        } else {
+            System.out.println("Cancelled relationship deletion");
+        }
+    }//GEN-LAST:event_deleteRelBtnActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -1975,6 +2113,7 @@ public class OCMS extends javax.swing.JFrame {
         descriptionInputTextArea.setText("");
         charGroupList.setListData(new String[0]);
         charRelationshipList.setListData(new String[0]);
+        charTagList.setListData(new String[0]);
         refreshCharacterList();
     }
     
@@ -2016,6 +2155,9 @@ public class OCMS extends javax.swing.JFrame {
             groupTagList.setListData(gh.getTags(selectedGroup));
         }
     }
+    public void refreshGroupComboBox(JComboBox<String> combo){
+        combo.setModel(new javax.swing.DefaultComboBoxModel<>(gh.getAllGroups()));
+    }
     
     public void refreshRelList(){
         if(selectedRelChar != null){
@@ -2043,6 +2185,45 @@ public class OCMS extends javax.swing.JFrame {
         tagSelect2ComboBox.setSelectedIndex(-1);
     }
     
+    public void clearSearchInputs(){
+        nameInputText3.setText("");
+        searchTagList.setListData(new String[0]);
+        searchTagComboBox.setSelectedIndex(-1);
+        refreshSearchList();
+    }
+    
+    public void refreshSearchList(){
+        String name = nameInputText3.getText();
+        String[] chars = ch.getAllCharacters();
+        List<String> tags = getSearchTags(); //get list values
+        
+        if(searchGroupComboBox.getSelectedIndex() != -1){
+            String group = searchGroupComboBox.getSelectedItem().toString();
+            chars = sh.filterGroup(chars, group);
+        }
+        if(!tags.isEmpty()){
+            System.out.println("Filtering tags");
+            chars = sh.filterTag(chars, tags);
+        }
+        
+        if(!name.equals("")){
+            chars = sh.filterName(chars, name);
+        }
+        searchList.setListData(chars);
+    }
+    
+    public List<String> getSearchTags(){
+        List<String> tags = new ArrayList<>();
+        // add tag to list values
+        ListModel<String> m = searchTagList.getModel();
+        for (int i = 0; i < m.getSize(); i++) {
+            String item = m.getElementAt(i);
+            tags.add(item);
+        }
+        
+        return tags;
+    }
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addCharBtn;
@@ -2064,6 +2245,9 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JButton createGroupBtn;
     private javax.swing.JButton createRelBtn;
     private javax.swing.JButton createTagBtn;
+    private javax.swing.JButton deleteCharButton;
+    private javax.swing.JButton deleteGroupBtn;
+    private javax.swing.JButton deleteRelBtn;
     private javax.swing.JTextArea descriptionInputTextArea;
     private javax.swing.JTextArea descriptionInputTextArea1;
     private javax.swing.JTextField dobInputText;
@@ -2078,10 +2262,6 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JPanel groupListPanel;
     private javax.swing.JButton groupMenuBtn;
     private javax.swing.JList<String> groupTagList;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2123,8 +2303,6 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JList<String> jList2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -2177,7 +2355,6 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JPanel navPanel;
     private javax.swing.JSplitPane navSplit;
     private javax.swing.JTextField occupationInputText;
-    private javax.swing.JTextField occupationInputText1;
     private javax.swing.JTextField pronounsInputText;
     private javax.swing.JPanel rPanel;
     private javax.swing.JComboBox<String> relChar1ComboBox;
@@ -2190,7 +2367,14 @@ public class OCMS extends javax.swing.JFrame {
     private javax.swing.JButton relSelectCharacterBtn;
     private javax.swing.JComboBox<String> relSelectCharacterComboBox;
     private javax.swing.JPanel sPanel;
+    private javax.swing.JButton searchAddTagBtn;
+    private javax.swing.JButton searchClearBtn;
+    private javax.swing.JComboBox<String> searchGroupComboBox;
+    private javax.swing.JList<String> searchList;
     private javax.swing.JButton searchMenuBtn;
+    private javax.swing.JComboBox<String> searchTagComboBox;
+    private javax.swing.JList<String> searchTagList;
+    private javax.swing.JButton searchUpdateBtn;
     private javax.swing.JTextField speciesInputText;
     private javax.swing.JPanel tPanel;
     private javax.swing.JPanel tagAddPanel;

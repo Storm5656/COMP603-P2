@@ -137,4 +137,18 @@ public class RelationshipHandler {
         
         return relationships.toArray(new String[0]);
     }
+
+    public void deleteRel(Relationship r) {
+        if(r == null){
+            return;
+        }
+        Connection conn = DatabaseManager.getConnection();
+        String sql = "DELETE FROM RELATIONSHIPS WHERE REL_ID = ?";
+        try(PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, r.getId());
+            ps.executeUpdate();
+        } catch(SQLException ex){
+            ex.printStackTrace();
+        }
+    }
 }

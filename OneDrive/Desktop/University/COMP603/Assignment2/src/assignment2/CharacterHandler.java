@@ -213,4 +213,66 @@ public class CharacterHandler {
         
         return tags.toArray(new String[0]);
     }
+
+    public void deleteChar(Character c) {
+        if (c == null){
+            return;
+        }
+        Connection conn = DatabaseManager.getConnection();
+        try {
+            // Start transaction
+            conn.setAutoCommit(false);
+
+            // Delete relationships
+            String sql1 = "DELETE FROM RELATIONSHIPS "
+                        + "WHERE CHAR1_ID = ? OR CHAR2_ID = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql1)) {
+                ps.setInt(1, c.getId());
+                ps.setInt(2, c.getId());
+                ps.executeUpdate();
+            }
+
+            // Delete group links
+            String sql2 = "DELETE FROM CHARACTER_GROUPS "
+                        + "WHERE CHARACTER_ID = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql2)) {
+                ps.setInt(1, c.getId());
+                ps.executeUpdate();
+            }
+
+            // Delete tag links
+            String sql3 = "DELETE FROM CHARACTER_TAGS "
+                        + "WHERE CHARACTER_ID = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql3)) {
+                ps.setInt(1, c.getId());
+                ps.executeUpdate();
+            }
+
+            // Delete character
+            String sql4 = "DELETE FROM CHARACTERS "
+                        + "WHERE CHAR_ID = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql4)) {
+                ps.setInt(1, c.getId());
+                ps.executeUpdate();
+            }
+
+            // Save all changes
+            conn.commit();
+
+        } catch (SQLException e) {
+
+            try {
+                // Undo everything if something failed
+                conn.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
+            e.printStackTrace();
+        }
+    }
 }
