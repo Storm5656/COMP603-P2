@@ -3,13 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package assignment2;
-
+import assignment2.Controllers.*;
+import assignment2.Models.DatabaseManager;
+import assignment2.Models.Entities.*;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.ListModel;
@@ -21,21 +23,25 @@ import javax.swing.ListModel;
 public class OCMS extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(OCMS.class.getName());
-    private Character selectedChar;
-    private Group selectedGroup;
-    private Relationship selectedRel;
-    private Character selectedRelChar;
-    private CharacterHandler ch = new CharacterHandler();
-    private GroupHandler gh = new GroupHandler();
-    private RelationshipHandler rh = new RelationshipHandler();
-    private TagHandler th = new TagHandler();
-    private SearchHandler sh = new SearchHandler();
+
+    private CharacterController charController;
+    private GroupController groupController;
+    private TagController tagController;
+    private RelationshipController relController;
+    private SearchController searchController;
 
     /**
      * Creates new form OCMS
      */
     public OCMS() {
         initComponents();
+        charController = new CharacterController(this);
+        groupController = new GroupController(this);
+        tagController = new TagController(this);
+        relController = new RelationshipController(this);
+        searchController = new SearchController(this);
+        
+        this.refreshCharList();
     }
 
     /**
@@ -1694,43 +1700,77 @@ public class OCMS extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     private void exitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitBtnActionPerformed
         DatabaseManager.closeConnections();
-        this.dispose();
+        System.exit(0);
     }//GEN-LAST:event_exitBtnActionPerformed
 
+    /**
+     * Changes to the character menu.
+     * @param evt 
+     */
     private void charMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_charMenuBtnActionPerformed
         CardLayout cl = (CardLayout) mainPanel.getLayout();
         cl.show(mainPanel, "character");
-        refreshCharacterList();
+        
+        setCharInputs();
+        refreshCharList();
     }//GEN-LAST:event_charMenuBtnActionPerformed
 
+    /**
+     * Changes to the group menu.
+     * @param evt 
+     */
     private void groupMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_groupMenuBtnActionPerformed
         CardLayout cl = (CardLayout) mainPanel.getLayout();
         cl.show(mainPanel, "group");
+        
+        setGroupInputs();
         refreshGroupList();
     }//GEN-LAST:event_groupMenuBtnActionPerformed
 
+    /**
+     * Changes to the relationship menu
+     * @param evt 
+     */
     private void relMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relMenuBtnActionPerformed
         CardLayout cl = (CardLayout) mainPanel.getLayout();
         cl.show(mainPanel, "relationship");
+        
+        setRelInputs();
         refreshRelList();
     }//GEN-LAST:event_relMenuBtnActionPerformed
-
+    
+    /**
+     * Changes to the tag menu.
+     * @param evt 
+     */
     private void tagMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tagMenuBtnActionPerformed
         CardLayout cl = (CardLayout) mainPanel.getLayout();
         cl.show(mainPanel, "tag");
+        
         refreshTagList();
     }//GEN-LAST:event_tagMenuBtnActionPerformed
 
+    /**
+     * Changes to the search menu.
+     * @param evt 
+     */
     private void searchMenuBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchMenuBtnActionPerformed
         CardLayout cl = (CardLayout) mainPanel.getLayout();
         cl.show(mainPanel, "search");
         clearSearchInputs();
     }//GEN-LAST:event_searchMenuBtnActionPerformed
-
+    
+    /**
+     * Opens details panel to create a new character.
+     * @param evt 
+     */
     private void addCharBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCharBtnActionPerformed
         charDetailsPanel.setVisible(true);
-        clearCharacterInputs();
-        selectedChar = null;
+        
+        // Set selected character null
+        charController.select(null);
+        
+        setCharInputs();
     }//GEN-LAST:event_addCharBtnActionPerformed
 
     /**
@@ -1739,26 +1779,22 @@ public class OCMS extends javax.swing.JFrame {
      * @param evt 
      */
     private void createGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createGroupBtnActionPerformed
-        String name = nameInputText1.getText();
-        String description = descriptionInputTextArea1.getText();
+        groupController.updateGroup();
         
-        if(selectedGroup == null){
-            gh.createGroup(name, description);
-        }
-        else{
-            Group g = new Group(selectedGroup.getId(), name, description);
-            gh.editGroup(g);
-        }
-        
-        clearGroupInputs();
-        groupDetailsPanel.setVisible(false);
+        refreshGroupList();
     }//GEN-LAST:event_createGroupBtnActionPerformed
 
+    /**
+     * Opens details panel to create a new group
+     * @param evt 
+     */
     private void addGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addGroupBtnActionPerformed
         groupDetailsPanel.setVisible(true);
-        clearGroupInputs();
-        selectedGroup = null;
-        refreshGroupCharList();
+        
+        // Set selected character null
+        groupController.select(null);
+        
+        setGroupInputs();
     }//GEN-LAST:event_addGroupBtnActionPerformed
 
     /**
@@ -1767,46 +1803,32 @@ public class OCMS extends javax.swing.JFrame {
      * @param evt 
      */
     private void addCharToGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCharToGroupBtnActionPerformed
-        String charName = groupAddCharComboBox.getSelectedItem().toString();
-        if (charName == null) {
-            return;
-        }
-        Character c = ch.getCharacter(charName);
+        charController.manageGroup();
         
-        //If character is already in group, remove from group
-        for(int i = 0; i < groupCharList.getModel().getSize(); i++){
-            if(charName.equals(groupCharList.getModel().getElementAt(i))){
-                ch.removeCharacterFromGroup(c, selectedGroup);
-                
-                refreshGroupCharList();
-                groupAddCharComboBox.setSelectedIndex(-1);
-                return;
-            }
-        }
-        
-        if(selectedGroup == null){
-            JOptionPane.showMessageDialog(null, "Please select a group before adding characters!", "Error", JOptionPane.WARNING_MESSAGE);
-        }
-        else{
-            ch.addCharacterToGroup(c, selectedGroup);
-        }
-        refreshGroupCharList();
-        groupAddCharComboBox.setSelectedIndex(-1);
+        setGroupInputs();
     }//GEN-LAST:event_addCharToGroupBtnActionPerformed
 
+    /**
+     * Creates a tag
+     * @param evt 
+     */
     private void createTagBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createTagBtnActionPerformed
-        if(!"".equals(nameInputText2.getText())){
-            th.createTag(nameInputText2.getText());
-        }
-        clearTagInputs();
+        tagController.createTag();
+        
         refreshTagList();
     }//GEN-LAST:event_createTagBtnActionPerformed
 
+    /**
+     * Opens details panel to create a new relationship
+     * @param evt 
+     */
     private void addRelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRelBtnActionPerformed
         relDetailsPanel.setVisible(true);
-        clearRelInputs();
-        selectedRel = null;
-        refreshRelList();
+        
+        // Set selected relationship null
+        relController.selectRel(null);
+        
+        setRelInputs();
     }//GEN-LAST:event_addRelBtnActionPerformed
 
     /**
@@ -1815,245 +1837,212 @@ public class OCMS extends javax.swing.JFrame {
      * @param evt 
      */
     private void createCharacterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createCharacterBtnActionPerformed
-        try{
-            int age;
-
-            if (ageInputText.getText().isEmpty()){
-                age = 0;
-            } 
-            else{
-                age = Integer.parseInt(ageInputText.getText());
-            }
-
-            String name = nameInputText.getText();
-            String pro = pronounsInputText.getText();
-            String dob = dobInputText.getText();
-            String spe = speciesInputText.getText();
-            String occ = occupationInputText.getText();
-            String desc = descriptionInputTextArea.getText();
-
-            if(selectedChar == null){
-                ch.createCharacter(name, pro, dob, age, spe, occ, desc);
-            }
-            else{
-                Character newC = new Character(selectedChar.getId(), name, pro, age, dob, spe, occ, desc);
-                ch.editCharacter(newC);
-            }
-            
-            clearCharacterInputs();
-            charDetailsPanel.setVisible(false);
-        }
-        catch(Exception ex){
-            ex.printStackTrace();
-        }
+        charController.updateCharacter();
+        
+        refreshCharList();
+        setCharInputs();
     }//GEN-LAST:event_createCharacterBtnActionPerformed
 
+    /**
+     * Select a character and update the view.
+     * @param evt 
+     */
     private void characterListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_characterListValueChanged
-        String selected = characterList.getSelectedValue();
-        Character c = ch.getCharacter(selected);
-        selectedChar = c;
-        
-        charDetailsPanel.setVisible(true);
-        if (c != null){
-            nameInputText.setText(c.getName());
-            pronounsInputText.setText(c.getPronouns());
-            ageInputText.setText(Integer.toString(c.getAge()));
-            dobInputText.setText(c.getDob());
-            speciesInputText.setText(c.getSpecies());
-            occupationInputText.setText(c.getOccupation());
-            descriptionInputTextArea.setText(c.getDescription());
-            charGroupList.setListData(ch.getGroups(c));
-            charRelationshipList.setListData(rh.getCharRelationships(c));
-            refreshTagCharacterList();
-        }
+        setCharInputs();
     }//GEN-LAST:event_characterListValueChanged
 
+    /**
+     * Select a group and update the view.
+     * @param evt 
+     */
     private void groupListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_groupListValueChanged
-        String selected = groupList.getSelectedValue();
-        GroupHandler gh = new GroupHandler();
-        Group g = gh.getGroup(selected);
-        selectedGroup = g;
-        
-        groupDetailsPanel.setVisible(true);
-        if(g != null){
-            nameInputText1.setText(g.getName());
-            descriptionInputTextArea1.setText(g.getDescription());
-            refreshGroupCharList();
-            refreshGroupTagList();
-        }
+        setGroupInputs();
     }//GEN-LAST:event_groupListValueChanged
 
+    /**
+     * Refresh add character to group combo box
+     * @param evt 
+     */
     private void groupAddCharComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_groupAddCharComboBoxPopupMenuWillBecomeVisible
-        refreshCharacterComboBox(groupAddCharComboBox);
+        refreshCharComboBox(groupAddCharComboBox);
     }//GEN-LAST:event_groupAddCharComboBoxPopupMenuWillBecomeVisible
 
+    /**
+     * Refresh select character for relationship page combo box.
+     * @param evt 
+     */
     private void relSelectCharacterComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_relSelectCharacterComboBoxPopupMenuWillBecomeVisible
-        refreshCharacterComboBox(relSelectCharacterComboBox);
+        refreshCharComboBox(relSelectCharacterComboBox);
     }//GEN-LAST:event_relSelectCharacterComboBoxPopupMenuWillBecomeVisible
 
+    /**
+     * Refresh add character 1 to relationship combo box.
+     * @param evt 
+     */
     private void relChar1ComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_relChar1ComboBoxPopupMenuWillBecomeVisible
-        refreshCharacterComboBox(relChar1ComboBox);
+        refreshCharComboBox(relChar1ComboBox);
     }//GEN-LAST:event_relChar1ComboBoxPopupMenuWillBecomeVisible
 
+    /**
+     * Refresh add character 2 to relationship combo box.
+     * @param evt 
+     */
     private void relChar2ComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_relChar2ComboBoxPopupMenuWillBecomeVisible
-        refreshCharacterComboBox(relChar2ComboBox);
+        refreshCharComboBox(relChar2ComboBox);
     }//GEN-LAST:event_relChar2ComboBoxPopupMenuWillBecomeVisible
-              
+        
+    /**
+     * Selects a character to show the relationship of
+     * @param evt 
+     */
     private void relSelectCharacterBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relSelectCharacterBtnActionPerformed
-        if(relSelectCharacterComboBox.getSelectedIndex() != -1){
-            selectedRelChar = ch.getCharacter(relSelectCharacterComboBox.getSelectedItem().toString());
-            refreshRelList();
-        }
+        relController.selectChar(relSelectCharacterComboBox.getSelectedItem().toString());
+        
+        refreshRelList();
     }//GEN-LAST:event_relSelectCharacterBtnActionPerformed
 
+    /**
+     * Create a relationship if there is no selected relationship
+     * Otherwise edit the selected relationship
+     * @param evt 
+     */
     private void createRelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createRelBtnActionPerformed
-        if(relChar1ComboBox.getSelectedIndex() != -1 && relChar2ComboBox.getSelectedIndex() != -1){
-            Character c1 = ch.getCharacter(relChar1ComboBox.getSelectedItem().toString());
-            Character c2 = ch.getCharacter(relChar2ComboBox.getSelectedItem().toString());
-            
-            if(c1.getId() == c2.getId()){
-                JOptionPane.showMessageDialog(null, "Select two different characters for the relationship");
-            } else{
-                String d1 = dynamic1TextBox.getText();
-                String d2 = dynamic2TextBox.getText();
-                String description = relDescriptionTextArea.getText();
-                
-                if (selectedRel == null){
-                    rh.createRelationship(c1, c2, d1, d2, description);
-                } else{
-                    rh.editRelationship(new Relationship(selectedRel.getId(), c1, c2, d1, d2, description));
-                }
-            }
-        }else{
-            JOptionPane.showMessageDialog(null, "Select two different characters for the relationship");
-        }
+        relController.updateRelationship();
         
-        clearRelInputs();
         refreshRelList();
-        selectedRel = null;
-        relDetailsPanel.setVisible(false);
+        setRelInputs();
     }//GEN-LAST:event_createRelBtnActionPerformed
-
+    
+    /**
+     * Select a relationship and update the view
+     * @param evt 
+     */
     private void relListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_relListValueChanged
-        if (relList.getSelectedValue() == null) {
-            return;
-        }
-        
-        selectedRel = rh.getRelationship(relList.getSelectedValue().toString());
-        refreshCharacterComboBox(relChar1ComboBox);
-        refreshCharacterComboBox(relChar2ComboBox);
-        relDetailsPanel.setVisible(true);
-        
-        relChar1ComboBox.setSelectedItem(selectedRel.getChar1().getName());
-        relChar2ComboBox.setSelectedItem(selectedRel.getChar2().getName());
-        dynamic1TextBox.setText(selectedRel.getDynamic1());
-        dynamic2TextBox.setText(selectedRel.getDynamic2());
-        relDescriptionTextArea.setText(selectedRel.getDescription());
+        setRelInputs();
     }//GEN-LAST:event_relListValueChanged
 
+    /**
+     * Refresh add tag to character selection combo box.
+     * @param evt 
+     */
     private void tagCharacterComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_tagCharacterComboBoxPopupMenuWillBecomeVisible
-        refreshCharacterComboBox(tagCharacterComboBox);
+        refreshCharComboBox(tagCharacterComboBox);
     }//GEN-LAST:event_tagCharacterComboBoxPopupMenuWillBecomeVisible
 
+    /**
+     * Refresh add tag to group selection combo box.
+     * @param evt 
+     */
     private void tagGroupComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_tagGroupComboBoxPopupMenuWillBecomeVisible
         refreshGroupComboBox(tagGroupComboBox);
     }//GEN-LAST:event_tagGroupComboBoxPopupMenuWillBecomeVisible
 
+    /**
+     * Refresh tag selection 1 combo box.
+     * @param evt 
+     */
     private void tagSelect1ComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_tagSelect1ComboBoxPopupMenuWillBecomeVisible
         refreshTagComboBox(tagSelect1ComboBox);
     }//GEN-LAST:event_tagSelect1ComboBoxPopupMenuWillBecomeVisible
 
+    /**
+     * Refresh tag selection 2 combo box
+     * @param evt 
+     */
     private void tagSelect2ComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_tagSelect2ComboBoxPopupMenuWillBecomeVisible
         refreshTagComboBox(tagSelect2ComboBox);
     }//GEN-LAST:event_tagSelect2ComboBoxPopupMenuWillBecomeVisible
 
+    /**
+     * Adds the selected tag to the selected character
+     * @param evt 
+     */
     private void addTagToCharBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTagToCharBtnActionPerformed
-        if(tagSelect1ComboBox.getSelectedItem() != null && tagCharacterComboBox.getSelectedItem() != null){
-            String tag = tagSelect1ComboBox.getSelectedItem().toString();
-            String c = tagCharacterComboBox.getSelectedItem().toString();
-            th.addCharTag(ch.getCharacter(c), th.getTag(tag));
-        } else{
-            JOptionPane.showMessageDialog(null, "Select tag and character");
-        }
+        tagController.addTagToChar();
+        
         clearTagInputs();
-        refreshTagCharacterList();
     }//GEN-LAST:event_addTagToCharBtnActionPerformed
-
+    
+    /**
+     * Adds the selected tag to the selected group
+     * @param evt 
+     */
     private void addTagToGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTagToGroupBtnActionPerformed
-        if(tagSelect2ComboBox.getSelectedItem() != null && tagGroupComboBox.getSelectedItem() != null){
-            String tag = tagSelect2ComboBox.getSelectedItem().toString();
-            String g = tagGroupComboBox.getSelectedItem().toString();
-            th.addGroupTag(gh.getGroup(g), th.getTag(tag));
-        } else{
-            JOptionPane.showMessageDialog(null, "Select tag and group");
-        }
+        tagController.addTagToGroup();
+        
         clearTagInputs();
-        refreshGroupTagList();
     }//GEN-LAST:event_addTagToGroupBtnActionPerformed
 
+    /**
+     * Refresh tag combo box on the search filter
+     * @param evt 
+     */
     private void searchTagComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_searchTagComboBoxPopupMenuWillBecomeVisible
         refreshTagComboBox(searchTagComboBox);
     }//GEN-LAST:event_searchTagComboBoxPopupMenuWillBecomeVisible
 
+    /**
+     * Clear search inputs and search list
+     * @param evt 
+     */
     private void searchClearBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchClearBtnActionPerformed
         clearSearchInputs();
+        refreshSearchList();
     }//GEN-LAST:event_searchClearBtnActionPerformed
-
+    
+    /**
+     * Refresh group search filter combo box 
+     * @param evt 
+     */
     private void searchGroupComboBoxPopupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {//GEN-FIRST:event_searchGroupComboBoxPopupMenuWillBecomeVisible
         refreshGroupComboBox(searchGroupComboBox);
     }//GEN-LAST:event_searchGroupComboBoxPopupMenuWillBecomeVisible
 
+    /**
+     * Add new tag to the search filter list
+     * @param evt 
+     */
     private void searchAddTagBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchAddTagBtnActionPerformed
-        String tag = searchTagComboBox.getSelectedItem().toString();
-        List<String> tags = getSearchTags();
-        if(!"".equals(tag)){
-            tags.add(tag);
-        }
-        searchTagList.setListData(tags.toArray(String[]::new));
+        searchTagList.setListData(searchController.addTagToSearchFilter());
         searchTagComboBox.setSelectedIndex(-1);
     }//GEN-LAST:event_searchAddTagBtnActionPerformed
-
+ 
+    /**
+     * Update search list
+     * @param evt 
+     */
     private void searchUpdateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchUpdateBtnActionPerformed
         refreshSearchList();
     }//GEN-LAST:event_searchUpdateBtnActionPerformed
 
+    /**
+     * Delete selected character
+     * @param evt 
+     */
     private void deleteCharButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteCharButtonActionPerformed
-        int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this character?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
-
-        if (response == JOptionPane.YES_OPTION) {
-            // User clicked Yes
-            ch.deleteChar(selectedChar);
-            refreshCharacterList();
-            charDetailsPanel.setVisible(false);
-        } else {
-            System.out.println("Cancelled character deletion");
-        }
+        charController.deleteChar();
+        charDetailsPanel.setVisible(false);
+        refreshCharList();
     }//GEN-LAST:event_deleteCharButtonActionPerformed
 
+    /**
+     * Delete selected group
+     * @param evt 
+     */
     private void deleteGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteGroupBtnActionPerformed
-        int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this group?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
-
-        if (response == JOptionPane.YES_OPTION) {
-            // User clicked Yes
-            gh.deleteGroup(selectedGroup);
-            refreshGroupList();
-            groupDetailsPanel.setVisible(false);
-        } else {
-            System.out.println("Cancelled group deletion");
-        }
+        groupController.deleteGroup();
+        groupDetailsPanel.setVisible(false);
+        refreshGroupList();
     }//GEN-LAST:event_deleteGroupBtnActionPerformed
 
+    /**
+     * Delete selected relationship
+     * @param evt 
+     */
     private void deleteRelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteRelBtnActionPerformed
-        int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this relationship?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
-
-        if (response == JOptionPane.YES_OPTION) {
-            // User clicked Yes
-            rh.deleteRel(selectedRel);
-            refreshRelList();
-            relDetailsPanel.setVisible(false);
-        } else {
-            System.out.println("Cancelled relationship deletion");
-        }
+        relController.deleteRel();
+        relDetailsPanel.setVisible(false);
+        refreshRelList();
     }//GEN-LAST:event_deleteRelBtnActionPerformed
     /**
      * @param args the command line arguments
@@ -2078,7 +2067,6 @@ public class OCMS extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new OCMS().setVisible(true));
-        
     }
     
     public void setSplitHeight(){
@@ -2103,78 +2091,39 @@ public class OCMS extends javax.swing.JFrame {
         });
     }
     
-    public void clearCharacterInputs(){
+    
+    // Show Dialogs //
+    public void showError(String s){
+        JOptionPane.showMessageDialog(null, s);
+    }
+    
+    public int showConfirmation(){
+        return JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
+    }
+    
+    // Clear Inputs //
+    public void clearCharInputs(){
+        charController.select(null);
+        
         nameInputText.setText("");
         pronounsInputText.setText("");
-        dobInputText.setText("");
         ageInputText.setText("");
+        dobInputText.setText("");
         speciesInputText.setText("");
         occupationInputText.setText("");
         descriptionInputTextArea.setText("");
         charGroupList.setListData(new String[0]);
         charRelationshipList.setListData(new String[0]);
         charTagList.setListData(new String[0]);
-        refreshCharacterList();
-    }
-    
-    public void refreshCharacterList(){
-        characterList.setListData(ch.getAllCharacters());
-    }
-    public void refreshTagCharacterList(){
-        if(selectedChar != null){
-            charTagList.setListData(ch.getTags(selectedChar));
-        }
     }
     
     public void clearGroupInputs(){
+        groupController.select(null);
+        
         nameInputText1.setText("");
         descriptionInputTextArea1.setText("");
         groupCharList.setListData(new String[0]);
         groupTagList.setListData(new String[0]);
-        refreshGroupList();
-    }
-    
-    public void clearRelInputs(){
-        relChar1ComboBox.setSelectedIndex(-1);
-        relChar2ComboBox.setSelectedIndex(-1);
-        dynamic1TextBox.setText("");
-        dynamic2TextBox.setText("");
-        relDescriptionTextArea.setText("");
-    }
-    
-    public void refreshGroupList(){
-        groupList.setListData(gh.getAllGroups());
-    }
-    public void refreshGroupCharList(){
-        if(selectedGroup != null){
-            groupCharList.setListData(gh.getAllCharInGroup(selectedGroup));
-        }
-    }
-    public void refreshGroupTagList(){
-        if(selectedGroup != null){
-            groupTagList.setListData(gh.getTags(selectedGroup));
-        }
-    }
-    public void refreshGroupComboBox(JComboBox<String> combo){
-        combo.setModel(new javax.swing.DefaultComboBoxModel<>(gh.getAllGroups()));
-    }
-    
-    public void refreshRelList(){
-        if(selectedRelChar != null){
-            relList.setListData(rh.getCharRelationships(selectedRelChar));
-        }
-    }
-    
-    public void refreshTagList(){
-        tagList.setListData(th.getTags());
-    }
-    
-    public void refreshCharacterComboBox(javax.swing.JComboBox<String> combo){
-        combo.setModel(new javax.swing.DefaultComboBoxModel<>(ch.getAllCharacters()));
-    }
-    
-    public void refreshTagComboBox(javax.swing.JComboBox<String> combo){
-        combo.setModel(new javax.swing.DefaultComboBoxModel<>(th.getTags()));
     }
     
     public void clearTagInputs(){
@@ -2185,45 +2134,198 @@ public class OCMS extends javax.swing.JFrame {
         tagSelect2ComboBox.setSelectedIndex(-1);
     }
     
+    public void clearRelInputs(){
+        relController.selectRel(null);
+        
+        relChar1ComboBox.setSelectedIndex(-1);
+        relChar2ComboBox.setSelectedIndex(-1);
+        dynamic1TextBox.setText("");
+        dynamic2TextBox.setText("");
+        relDescriptionTextArea.setText("");
+    }
+    
     public void clearSearchInputs(){
         nameInputText3.setText("");
         searchTagList.setListData(new String[0]);
         searchTagComboBox.setSelectedIndex(-1);
-        refreshSearchList();
+    }
+            
+    // Get Inputs //
+    public String[] getCharInputs(){
+        List<String> c = new ArrayList<>();
+        
+        c.add(nameInputText.getText());
+        c.add(pronounsInputText.getText());
+        c.add(ageInputText.getText());
+        c.add(dobInputText.getText());
+        c.add(speciesInputText.getText());
+        c.add(occupationInputText.getText());
+        c.add(descriptionInputTextArea.getText());
+        
+        return c.toArray(String[]::new);
+    }
+    
+    public String[] getGroupInputs(){
+        List<String> g = new ArrayList<>();
+        
+        g.add(nameInputText1.getText());
+        g.add(descriptionInputTextArea1.getText());
+        
+        return g.toArray(String[]::new);
+    }
+    
+    public String[] getTagInputs(){
+        List<String> t = new ArrayList<>();
+        
+        t.add(nameInputText2.getText());
+        t.add(tagCharacterComboBox.getSelectedItem().toString());
+        t.add(tagSelect1ComboBox.getSelectedItem().toString());
+        t.add(tagGroupComboBox.getSelectedItem().toString());
+        t.add(tagSelect2ComboBox.getSelectedItem().toString());
+        
+        return t.toArray(String[]::new);
+    }
+    
+    public String[] getRelInputs(){
+        List<String> r = new ArrayList<>();
+        
+        r.add(relChar1ComboBox.getSelectedItem().toString());
+        r.add(relChar2ComboBox.getSelectedItem().toString());
+        r.add(dynamic1TextBox.getText());
+        r.add(dynamic2TextBox.getText());
+        r.add(relDescriptionTextArea.getText());
+        
+        return r.toArray(String[]::new);
+    }
+    
+    public String[] getSearchInputs(){
+        List<String> s = new ArrayList<>();
+        s.add(nameInputText3.getText());
+        s.add(searchGroupComboBox.getSelectedItem().toString());
+        ListModel<String> list = searchTagList.getModel();
+        for(int i = 0; i < list.getSize(); i++){
+            s.add(list.getElementAt(i));
+        }
+        
+        return s.toArray(String[]::new);
+    }
+    
+    public String getCharAddToGroup(){
+        return groupAddCharComboBox.getSelectedItem().toString();
+    }
+    
+    public String getCharForSearch(){
+        return searchTagComboBox.getSelectedItem().toString();
+    }
+    
+    // Set Inputs //
+    public void setCharInputs(){
+        CharacterModel c = charController.getCharacter(characterList.getSelectedValue());
+        charController.select(c);
+        
+        charDetailsPanel.setVisible(true);
+        
+        if (c != null){
+            nameInputText.setText(c.getName());
+            pronounsInputText.setText(c.getPronouns());
+            ageInputText.setText(Integer.toString(c.getAge()));
+            dobInputText.setText(c.getDob());
+            speciesInputText.setText(c.getSpecies());
+            occupationInputText.setText(c.getOccupation());
+            descriptionInputTextArea.setText(c.getDescription());
+            charGroupList.setListData(charController.getGroups());
+            charRelationshipList.setListData(charController.getRelationships());
+            charTagList.setListData(charController.getTags());
+        }
+        else{
+            clearCharInputs();
+            charDetailsPanel.setVisible(false);
+        }
+    }
+    
+    public void setGroupInputs(){
+        Group g = groupController.getGroup(groupList.getSelectedValue());
+        groupController.select(g);
+        
+        groupDetailsPanel.setVisible(true);
+        
+        if(g != null){
+            nameInputText1.setText(g.getName());
+            descriptionInputTextArea1.setText(g.getDescription());
+            groupCharList.setListData(groupController.getCharacters());
+            groupTagList.setListData(groupController.getTags());
+        }
+        else{
+            clearGroupInputs();
+            groupDetailsPanel.setVisible(false);
+        }
+    }
+    
+    public void setRelInputs(){
+        Relationship r = relController.getRelationship(relList.getSelectedValue());
+        relController.selectRel(r);
+        
+        relDetailsPanel.setVisible(true);
+        
+        if(r != null){
+            relChar1ComboBox.setSelectedItem(r.getChar1().getName());
+            relChar2ComboBox.setSelectedItem(r.getChar2().getName());
+            dynamic1TextBox.setText(r.getDynamic1());
+            dynamic2TextBox.setText(r.getDynamic2());
+            relDescriptionTextArea.setText(r.getDescription());
+        }
+        else{
+            clearRelInputs();
+            relDetailsPanel.setVisible(false);
+        }
+    }
+    
+    // Refresh Lists //
+    public void refreshCharList(){
+        characterList.setListData(charController.getAll());
+    }
+    
+    public void refreshGroupList(){
+        groupList.setListData(groupController.getAll());
+    }
+    
+    public void refreshTagList(){ 
+        tagList.setListData(tagController.getAll());
+    }
+    
+    public void refreshRelList(){
+        relList.setListData(relController.getRelationships());
     }
     
     public void refreshSearchList(){
-        String name = nameInputText3.getText();
-        String[] chars = ch.getAllCharacters();
-        List<String> tags = getSearchTags(); //get list values
+        searchList.setListData(searchController.search());
+    }
         
-        if(searchGroupComboBox.getSelectedIndex() != -1){
-            String group = searchGroupComboBox.getSelectedItem().toString();
-            chars = sh.filterGroup(chars, group);
-        }
-        if(!tags.isEmpty()){
-            System.out.println("Filtering tags");
-            chars = sh.filterTag(chars, tags);
-        }
-        
-        if(!name.equals("")){
-            chars = sh.filterName(chars, name);
-        }
-        searchList.setListData(chars);
+    // Refresh Combo Boxes //
+    public void refreshCharComboBox(javax.swing.JComboBox<String> combo){
+        combo.setModel(new javax.swing.DefaultComboBoxModel<>(charController.getAll()));
     }
     
-    public List<String> getSearchTags(){
-        List<String> tags = new ArrayList<>();
-        // add tag to list values
-        ListModel<String> m = searchTagList.getModel();
-        for (int i = 0; i < m.getSize(); i++) {
-            String item = m.getElementAt(i);
-            tags.add(item);
-        }
-        
-        return tags;
+    public void refreshGroupComboBox(javax.swing.JComboBox<String> combo){
+        combo.setModel(new javax.swing.DefaultComboBoxModel<>(groupController.getAll()));
     }
     
+    public void refreshTagComboBox(javax.swing.JComboBox<String> combo){
+        combo.setModel(new javax.swing.DefaultComboBoxModel<>(tagController.getAll()));
+    }
+    
+    // Get Controllers //
+    public CharacterController getCharController(){
+        return charController;
+    }
+    
+    public GroupController getGroupController(){
+        return groupController;
+    }
+    
+    public TagController getTagController(){
+        return tagController;
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addCharBtn;

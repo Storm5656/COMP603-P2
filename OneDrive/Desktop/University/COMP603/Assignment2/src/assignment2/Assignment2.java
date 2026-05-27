@@ -25,11 +25,6 @@ public class Assignment2 {
         
         // Resize properly
         frame.setSplitHeight();
-        
-        // Set up
-        DatabaseManager.establishConnection();
-        frame.refreshCharacterList();
-        frame.refreshGroupList();
     }
     
 }
