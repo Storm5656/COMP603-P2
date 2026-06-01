@@ -1,20 +1,13 @@
-Sun May 24 15:38:43 NZST 2026 : Apache Derby Network Server - 10.17.1.0 - (1913217) started and ready to accept connections on port 1527
 ----------------------------------------------------------------
-Sun May 24 15:38:44 NZST 2026:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.17.1.0 - (1913217): instance a816c00e-019e-5810-4c68-00007d289a83 
+Mon Jun 01 16:37:38 NZST 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.17.1.0 - (1913217): instance a816c00e-019e-8179-1d97-00000eaede88 
 on database directory C:\Users\ren\OneDrive\Desktop\University\COMP603\Assignment2\CharacterDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@105be200 
-Loaded from file:/C:/Users/ren/OneDrive/Desktop/db-derby-10.17.1.0-bin/db-derby-10.17.1.0-bin/lib/derby.jar
+Loaded from file:/C:/Users/ren/derby/db-derby-10.17.1.0-lib/lib/derby.jar
 java.vendor=Eclipse Adoptium
 java.runtime.version=25.0.2+10-LTS
-user.dir=C:\Users\ren\OneDrive\Desktop\db-derby-10.17.1.0-bin\db-derby-10.17.1.0-bin
+user.dir=C:\Users\ren\OneDrive\Desktop\University\COMP603\Assignment2
 os.name=Windows 11
 os.arch=amd64
 os.version=10.0
-derby.system.home=C:\Users\ren\OneDrive\Desktop\University\COMP603\Assignment2
+derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
-----------------------------------------------------------------
-Sun May 24 15:38:56 NZST 2026: Shutting down Derby engine
-----------------------------------------------------------------
-Sun May 24 15:38:56 NZST 2026:
-Shutting down instance a816c00e-019e-5810-4c68-00007d289a83 on database directory C:\Users\ren\OneDrive\Desktop\University\COMP603\Assignment2\CharacterDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@105be200 
-----------------------------------------------------------------

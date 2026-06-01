@@ -14,8 +14,7 @@ public class Assignment2 {
     /**
      * @param args the command line arguments
      */
-    
-    // CLEAN ALL OF THIS UP
+     
     public static void main(String[] args) {
         OCMS frame = new OCMS();
         
